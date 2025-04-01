@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select Your Seats</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <h1>Cinema CAIRO</h1>
+            <ul>
+                <li><a href="main.html">Home</a></li>
+                <li><a href="#">Movies</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <h2>Select Your Seats</h2>
+        <div class="movie-details">
+            <img id="movie-poster" src="" alt="Movie Poster">
+            <div class="details">
+                <h3 id="movie-title"></h3>
+                <p id="movie-description"></p>
+            </div>
+        </div>
+
+        <div class="seating-chart">
+            <div class="screen">SCREEN</div>
+            <div class="seat-section front">Front Section</div>
+            <div class="seats" id="front-seats"></div>
+            <div class="seat-section middle">Middle Section</div>
+            <div class="seats" id="middle-seats"></div>
+            <div class="seat-section vip">VIP Section ($15)</div>
+            <div class="seats" id="vip-seats"></div>
+        </div>
+
+        <div class="legend">
+            <span class="seat available"></span> Available
+            <span class="seat selected"></span> Your Seat
+            <span class="seat unavailable"></span> Unavailable
+        </div>
+
+        <button id="confirm-selection">Confirm Selection</button>
+    </main>
+
+    <script>
+        function getQueryParams() {
+            const params = new URLSearchParams(window.location.search);
+            return {
+                title: params.get('title'),
+                poster: params.get('poster'),
+                description: params.get('description')
+            };
+        }
+
+        const movieDetails = getQueryParams();
+        document.getElementById('movie-title').textContent = movieDetails.title;
+        document.getElementById('movie-poster').src = `c:/Users/ofawz/Downloads/${movieDetails.poster}`;
+        document.getElementById('movie-description').textContent = movieDetails.description;
+    </script>
+    <script src="seating.js"></script>
+</body>
+</html>
