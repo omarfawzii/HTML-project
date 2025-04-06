@@ -1,6 +1,7 @@
 const seats = document.querySelectorAll('.seat.available');
 const selectedSeats = document.getElementById('selected-seats');
 const totalPrice = document.getElementById('total-price');
+const ticketPrice = 100; // Price per seat in EGP
 
 seats.forEach(seat => {
     seat.addEventListener('click', () => {
@@ -14,11 +15,7 @@ seats.forEach(seat => {
 function updateSelection() {
     const selected = document.querySelectorAll('.seat.selected');
     const selectedSeatCount = selected.length;
-    let total = 0;
-
-    selected.forEach(seat => {
-        total += parseInt(seat.getAttribute('data-price'));
-    });
+    const total = selectedSeatCount * ticketPrice;
 
     selectedSeats.textContent = selectedSeatCount;
     totalPrice.textContent = total;

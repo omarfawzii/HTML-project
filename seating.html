@@ -20,48 +20,57 @@
 
     <main>
         <h2>Select Your Seats</h2>
-        <div class="movie-details">
-            <img id="movie-poster" src="" alt="Movie Poster">
-            <div class="details">
-                <h3 id="movie-title"></h3>
-                <p id="movie-description"></p>
+        <div class="screen">Screen</div>
+        <div class="seating-chart">
+            <!-- Example rows of seats -->
+            <div class="row">
+                <div class="seat available"></div>
+                <div class="seat available"></div>
+                <div class="seat booked"></div>
+                <div class="seat available"></div>
+                <div class="seat available"></div>
+                <div class="seat available"></div>
+            </div>
+            <div class="row">
+                <div class="seat available"></div>
+                <div class="seat available"></div>
+                <div class="seat available"></div>
+                <div class="seat booked"></div>
+                <div class="seat available"></div>
+                <div class="seat available"></div>
+            </div>
+            <div class="row">
+                <div class="seat available"></div>
+                <div class="seat available"></div>
+                <div class="seat available"></div>
+                <div class="seat available"></div>
+                <div class="seat booked"></div>
+                <div class="seat available"></div>
+            </div>
+            <div class="row">
+                <div class="seat available"></div>
+                <div class="seat available"></div>
+                <div class="seat available"></div>
+                <div class="seat available"></div>
+                <div class="seat available"></div>
+                <div class="seat available"></div>
+            </div>
+            <div class="row">
+                <div class="seat available"></div>
+                <div class="seat available"></div>
+                <div class="seat available"></div>
+                <div class="seat available"></div>
+                <div class="seat available"></div>
+                <div class="seat available"></div>
             </div>
         </div>
-
-        <div class="seating-chart">
-            <div class="screen">SCREEN</div>
-            <div class="seat-section front">Front Section</div>
-            <div class="seats" id="front-seats"></div>
-            <div class="seat-section middle">Middle Section</div>
-            <div class="seats" id="middle-seats"></div>
-            <div class="seat-section vip">VIP Section ($15)</div>
-            <div class="seats" id="vip-seats"></div>
+        <div class="selection-info">
+            <p>Selected Seats: <span id="selected-seats"></span></p>
+            <p>Total Price: $<span id="total-price">0</span></p>
         </div>
-
-        <div class="legend">
-            <span class="seat available"></span> Available
-            <span class="seat selected"></span> Your Seat
-            <span class="seat unavailable"></span> Unavailable
-        </div>
-
-        <button id="confirm-selection">Confirm Selection</button>
+        <a href="confirmation.html" class="confirm-button">Confirm Selection</a>
     </main>
 
-    <script>
-        function getQueryParams() {
-            const params = new URLSearchParams(window.location.search);
-            return {
-                title: params.get('title'),
-                poster: params.get('poster'),
-                description: params.get('description')
-            };
-        }
-
-        const movieDetails = getQueryParams();
-        document.getElementById('movie-title').textContent = movieDetails.title;
-        document.getElementById('movie-poster').src = `c:/Users/ofawz/Downloads/${movieDetails.poster}`;
-        document.getElementById('movie-description').textContent = movieDetails.description;
-    </script>
     <script src="seating.js"></script>
 </body>
 </html>
