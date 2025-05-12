@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ticket Booking | VOX Cinemas</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary: #00c2ff;
+            --dark: #0f0f1a;
+            --light: #f8f9fa;
+            --accent: #ff4d8d;
+            --success: #28a745;
+            --warning: #ffc107;
+            --danger: #dc3545;
+            --card-bg: rgba(15, 15, 26, 0.8);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--dark);
+            color: var(--light);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            background-image: linear-gradient(rgba(15, 15, 26, 0.9), rgba(15, 15, 26, 0.9)), 
+                            url('https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');
+            background-size: cover;
+            background-attachment: fixed;
+        }
+
+        header {
+            background: linear-gradient(135deg, #000000 0%, #1a1a2e 100%);
+            padding: 1rem 2rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(to right, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: 2px;
+        }
+
+        .back-button {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: background 0.3s;
+            font-size: 1rem;
+        }
+
+        .back-button:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        main {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: rgba(15, 15, 26, 0.9);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .booking-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .movie-info {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 10px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .movie-header {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .movie-poster {
+            width: 120px;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 5px;
+            border: 2px solid var(--primary);
+        }
+
+        .movie-title {
+            color: var(--primary);
+            margin: 0;
+            font-size: 1.5rem;
+        }
+
+        .movie-meta {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+            margin: 0.5rem 0;
+        }
+
+        .showtime-selector {
+            margin-top: 2rem;
+        }
+
+        .showtime-title {
+            color: var(--light);
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .date-selector {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            overflow-x: auto;
+            padding-bottom: 0.5rem;
+        }
+
+        .date-option {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            min-width: 80px;
+            text-align: center;
+            transition: background 0.3s;
+            white-space: nowrap;
+        }
+
+        .date-option:hover, .date-option.selected {
+            background: var(--primary);
+        }
+
+        .time-slots {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 0.5rem;
+        }
+
+        .time-slot {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 0.7rem;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .time-slot:hover, .time-slot.selected {
+            background: var(--primary);
+            border-color: var(--primary);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 194, 255, 0.3);
+        }
+
+        .time-slot.occupied {
+            background: rgba(255, 77, 141, 0.2);
+            color: rgba(255, 255, 255, 0.3);
+            cursor: not-allowed;
+            text-decoration: line-through;
+        }
+
+        .auditorium-selector {
+            margin-top: 2rem;
+        }
+
+        .auditorium-options {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .auditorium-option {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .auditorium-option:hover, .auditorium-option.selected {
+            background: var(--primary);
+        }
+
+        .seat-selection {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 10px;
+            border-left: 4px solid var(--accent);
+        }
+
+        .screen-indicator {
+            text-align: center;
+            background: linear-gradient(to bottom, rgba(255,255,255,0.2), rgba(255,255,255,0.05));
+            padding: 1rem;
+            margin: 1rem 0 2rem;
+            border-radius: 5px;
+            color: var(--primary);
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .seat-map {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.7rem;
+            margin: 1rem 0;
+        }
+
+        .seat-row {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .seat {
+            width: 25px;
+            height: 25px;
+            border-radius: 3px;
+            background-color: #2a2a3a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.6rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .seat:hover:not(.occupied) {
+            transform: scale(1.1);
+            box-shadow: 0 0 10px rgba(0, 194, 255, 0.5);
+        }
+
+        .seat.selected {
+            background-color: var(--primary);
+            box-shadow: 0 0 10px rgba(0, 194, 255, 0.7);
+        }
+
+        .seat.occupied {
+            background-color: var(--accent);
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+
+        .seat.vip {
+            background-color: #f8c537;
+            color: #000;
+            font-weight: bold;
+        }
+
+        .seat-label {
+            position: absolute;
+            top: -20px;
+            font-size: 0.6rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .row-label {
+            color: rgba(255, 255, 255, 0.7);
+            width: 25px;
+            text-align: center;
+            font-size: 0.8rem;
+        }
+
+        .seat-legend {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 1.5rem 0;
+            flex-wrap: wrap;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.8rem;
+        }
+
+        .legend-color {
+            width: 15px;
+            height: 15px;
+            border-radius: 2px;
+        }
+
+        .booking-summary {
+            margin-top: 2rem;
+            background: rgba(0, 194, 255, 0.1);
+            padding: 1.5rem;
+            border-radius: 10px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .summary-title {
+            color: var(--primary);
+            margin-top: 0;
+        }
+
+        .summary-detail {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+
+        .total {
+            font-weight: bold;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .proceed-button {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            color: white;
+            border: none;
+            padding: 1rem;
+            font-size: 1.1rem;
+            border-radius: 5px;
+            margin-top: 1.5rem;
+            cursor: pointer;
+            width: 100%;
+            font-weight: bold;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .proceed-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 194, 255, 0.4);
+        }
+
+        .proceed-button:disabled {
+            background: #666;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* Loading spinner */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: var(--primary);
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Error message */
+        .error-message {
+            color: var(--accent);
+            text-align: center;
+            padding: 1rem;
+            background: rgba(255, 77, 141, 0.1);
+            border-radius: 5px;
+            margin: 1rem 0;
+        }
+
+        @media (max-width: 768px) {
+            .booking-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .movie-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .movie-poster {
+                margin: 0 auto;
+            }
+            
+            .date-selector {
+                flex-wrap: wrap;
+            }
+            
+            .seat {
+                width: 20px;
+                height: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">VOX</div>
+            <button class="back-button" onclick="window.history.back()">
+                <i class="fas fa-arrow-left"></i>
+                Back to Movies
+            </button>
+        </nav>
+    </header>
+
+    <main>
+        <div class="booking-container">
+            <div class="movie-info">
+                <div class="movie-header">
+                    <img id="movie-poster" src="" alt="Movie Poster" class="movie-poster">
+                    <div>
+                        <h2 class="movie-title" id="movie-title">Loading...</h2>
+                        <div class="movie-meta" id="movie-meta">
+                            <span id="movie-rating"><i class="fas fa-star"></i> Loading...</span>
+                            <span id="movie-duration"><i class="far fa-clock"></i> Loading...</span>
+                        </div>
+                        <div class="movie-meta" id="movie-description">
+                            Loading movie description...
+                        </div>
+                    </div>
+                </div>
+
+                <div class="showtime-selector">
+                    <h3 class="showtime-title">Select Date & Time</h3>
+                    <div class="date-selector" id="date-selector">
+                        <!-- Dates will be loaded by JavaScript -->
+                    </div>
+                    <div class="time-slots" id="time-slots">
+                        <!-- Times will be loaded by JavaScript -->
+                    </div>
+                </div>
+
+                <div class="auditorium-selector">
+                    <h3 class="showtime-title">Select Auditorium</h3>
+                    <div class="auditorium-options" id="auditorium-options">
+                        <!-- Auditoriums will be loaded by JavaScript -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="seat-selection">
+                <h3 class="showtime-title">Select Your Seats</h3>
+                <div class="screen-indicator">Screen This Way</div>
+                <div class="seat-map" id="seatMap">
+                    <!-- Seats will be generated by JavaScript -->
+                </div>
+                <div class="seat-legend">
+                    <div class="legend-item">
+                        <div class="legend-color" style="background-color: #2a2a3a;"></div>
+                        <span>Available</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background-color: var(--primary);"></div>
+                        <span>Selected</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background-color: var(--accent);"></div>
+                        <span>Occupied</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background-color: #f8c537;"></div>
+                        <span>VIP</span>
+                    </div>
+                </div>
+                <div class="booking-summary">
+                    <h4 class="summary-title">Booking Summary</h4>
+                    <div class="summary-detail">
+                        <span>Selected Seats:</span>
+                        <span id="selected-seats">None</span>
+                    </div>
+                    <div class="summary-detail">
+                        <span>Standard Seats:</span>
+                        <span>$<span id="standard-price">0.00</span></span>
+                    </div>
+                    <div class="summary-detail">
+                        <span>VIP Seats:</span>
+                        <span>$<span id="vip-price">0.00</span></span>
+                    </div>
+                    <div class="summary-detail total">
+                        <span>Total:</span>
+                        <span>$<span id="total-price">0.00</span></span>
+                    </div>
+                    <button class="proceed-button" id="proceedButton" disabled>
+                        <span id="proceed-text">Proceed to Payment</span>
+                        <span id="proceed-spinner" class="loading" style="display: none;"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // API Configuration
+        const API_BASE_URL = 'http://localhost:3000';
+        
+        // Global variables
+        let selectedMovie = null;
+        let selectedAuditorium = null;
+        let selectedDate = null;
+        let selectedTime = null;
+        let selectedSeats = [];
+        let seatPrices = {
+            standard: 15,
+            vip: 25,
+            imax: 20,
+            '4dx': 30
+        };
+
+        document.addEventListener('DOMContentLoaded', async function() {
+            // Check login status
+            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+            if (!isLoggedIn) {
+                alert('Please login to book tickets');
+                window.location.href = 'index.html';
+                return;
+            }
+
+            // Get movie ID from URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const movieId = urlParams.get('movieId');
+            
+            if (!movieId) {
+                showError('No movie selected');
+                window.location.href = 'main.html';
+                return;
+            }
+
+            try {
+                // Load movie details
+                await loadMovieDetails(movieId);
+                
+                // Load auditoriums
+                await loadAuditoriums();
+                
+                // Generate dates
+                generateDates();
+                
+                // Generate seat map
+                generateSeatMap();
+                
+                // Set up event listeners
+                setupEventListeners();
+                
+            } catch (error) {
+                console.error('Error:', error);
+                showError('Failed to load booking page. Please try again.');
+                setTimeout(() => window.location.href = 'main.html', 2000);
+            }
+        });
+
+        async function loadMovieDetails(movieId) {
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/movies/${movieId}`);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const movie = await response.json();
+                selectedMovie = movie;
+                
+                // Update DOM with movie details
+                document.getElementById('movie-title').textContent = movie.title;
+                document.getElementById('movie-poster').src = movie.poster;
+                document.getElementById('movie-poster').onerror = function() {
+                    this.src = 'https://via.placeholder.com/150x225?text=No+Poster';
+                };
+                document.getElementById('movie-rating').innerHTML = `<i class="fas fa-star"></i> ${movie.rating || 'N/A'}`;
+                document.getElementById('movie-duration').innerHTML = `<i class="far fa-clock"></i> ${movie.duration || 'N/A'}`;
+                document.getElementById('movie-description').textContent = movie.description;
+                
+                // Generate time slots if available
+                if (movie.showtimes && movie.showtimes.length > 0) {
+                    const timeSlotsContainer = document.getElementById('time-slots');
+                    timeSlotsContainer.innerHTML = movie.showtimes.map(time => `
+                        <button class="time-slot" data-time="${time}">${time}</button>
+                    `).join('');
+                }
+                
+            } catch (error) {
+                console.error('Error loading movie details:', error);
+                throw error;
+            }
+        }
+
+        async function loadAuditoriums() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/auditoriums`);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const auditoriums = await response.json();
+                const container = document.getElementById('auditorium-options');
+                
+                container.innerHTML = auditoriums.map(aud => `
+                    <button class="auditorium-option" 
+                            data-auditorium-id="${aud.id}"
+                            data-auditorium-type="${aud.type.toLowerCase()}">
+                        ${aud.name} (${aud.type})
+                    </button>
+                `).join('');
+                
+            } catch (error) {
+                console.error('Error loading auditoriums:', error);
+                throw error;
+            }
+        }
+
+        function generateDates() {
+            const dateContainer = document.getElementById('date-selector');
+            const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            
+            // Today + next 6 days
+            dateContainer.innerHTML = '';
+            for (let i = 0; i < 7; i++) {
+                const date = new Date();
+                date.setDate(date.getDate() + i);
+                
+                const dateElement = document.createElement('button');
+                dateElement.className = 'date-option';
+                dateElement.dataset.date = date.toISOString().split('T')[0];
+                
+                if (i === 0) {
+                    dateElement.textContent = 'Today';
+                    dateElement.classList.add('selected');
+                    selectedDate = dateElement.dataset.date;
+                } else {
+                    const dayName = days[date.getDay()];
+                    const month = months[date.getMonth()];
+                    const dayNum = date.getDate();
+                    dateElement.textContent = `${dayName}, ${month} ${dayNum}`;
+                }
+                
+                dateContainer.appendChild(dateElement);
+            }
+        }
+
+        function generateSeatMap() {
+            const seatMap = document.getElementById('seatMap');
+            seatMap.innerHTML = '';
+            
+            const rows = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
+            const seatsPerRow = 10;
+            const vipRows = ['A', 'B']; // First two rows are VIP
+            
+            // Create some occupied seats randomly (for demo)
+            const occupiedSeats = new Set();
+            for (let i = 0; i < 15; i++) {
+                const row = rows[Math.floor(Math.random() * rows.length)];
+                const seat = Math.floor(Math.random() * seatsPerRow) + 1;
+                occupiedSeats.add(`${row}${seat}`);
+            }
+            
+            rows.forEach(row => {
+                const seatRow = document.createElement('div');
+                seatRow.className = 'seat-row';
+                
+                // Add row label
+                const rowLabel = document.createElement('div');
+                rowLabel.className = 'row-label';
+                rowLabel.textContent = row;
+                seatRow.appendChild(rowLabel);
+                
+                // Generate seats
+                for (let i = 1; i <= seatsPerRow; i++) {
+                    const seat = document.createElement('div');
+                    const seatId = `${row}${i}`;
+                    const isVip = vipRows.includes(row);
+                    
+                    seat.className = 'seat';
+                    seat.id = seatId;
+                    
+                    // Add seat label (only for first and last seat in row)
+                    if (i === 1 || i === seatsPerRow) {
+                        const seatLabel = document.createElement('div');
+                        seatLabel.className = 'seat-label';
+                        seatLabel.textContent = i;
+                        seat.appendChild(seatLabel);
+                    }
+                    
+                    // Mark VIP seats
+                    if (isVip) {
+                        seat.classList.add('vip');
+                    }
+                    
+                    // Mark occupied seats
+                    if (occupiedSeats.has(seatId)) {
+                        seat.classList.add('occupied');
+                    }
+                    
+                    seatRow.appendChild(seat);
+                }
+                
+                seatMap.appendChild(seatRow);
+            });
+        }
+
+        function setupEventListeners() {
+            // Date selection
+            document.querySelectorAll('.date-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    document.querySelector('.date-option.selected').classList.remove('selected');
+                    this.classList.add('selected');
+                    selectedDate = this.dataset.date;
+                });
+            });
+
+            // Time slot selection
+            document.addEventListener('click', function(e) {
+                if (e.target.classList.contains('time-slot') && !e.target.classList.contains('occupied')) {
+                    document.querySelector('.time-slot.selected')?.classList.remove('selected');
+                    e.target.classList.add('selected');
+                    selectedTime = e.target.dataset.time;
+                }
+            });
+
+            // Auditorium selection
+            document.addEventListener('click', function(e) {
+                if (e.target.classList.contains('auditorium-option')) {
+                    document.querySelector('.auditorium-option.selected')?.classList.remove('selected');
+                    e.target.classList.add('selected');
+                    selectedAuditorium = {
+                        id: e.target.dataset.auditoriumId,
+                        type: e.target.dataset.auditoriumType
+                    };
+                    updateBookingSummary();
+                }
+            });
+
+            // Seat selection
+            document.addEventListener('click', function(e) {
+                const seat = e.target.closest('.seat:not(.occupied)');
+                if (seat) {
+                    seat.classList.toggle('selected');
+                    updateBookingSummary();
+                }
+            });
+
+            // Proceed to payment
+            document.getElementById('proceedButton').addEventListener('click', processBooking);
+        }
+
+        function updateBookingSummary() {
+            const selectedSeatElements = document.querySelectorAll('.seat.selected');
+            selectedSeats = Array.from(selectedSeatElements).map(seat => seat.id);
+            
+            const seatsDisplay = document.getElementById('selected-seats');
+            seatsDisplay.textContent = selectedSeats.length > 0 ? selectedSeats.join(', ') : 'None';
+            
+            // Calculate prices
+            let standardCount = 0;
+            let vipCount = 0;
+            
+            selectedSeatElements.forEach(seat => {
+                if (seat.classList.contains('vip')) {
+                    vipCount++;
+                } else {
+                    standardCount++;
+                }
+            });
+            
+            // Get auditorium type for pricing
+            const auditoriumType = selectedAuditorium?.type || 'standard';
+            const standardPrice = seatPrices[auditoriumType] || seatPrices.standard;
+            const vipPrice = seatPrices[auditoriumType] ? seatPrices[auditoriumType] * 1.5 : seatPrices.vip;
+            
+            const standardTotal = standardCount * standardPrice;
+            const vipTotal = vipCount * vipPrice;
+            const totalPrice = standardTotal + vipTotal;
+            
+            document.getElementById('standard-price').textContent = standardTotal.toFixed(2);
+            document.getElementById('vip-price').textContent = vipTotal.toFixed(2);
+            document.getElementById('total-price').textContent = totalPrice.toFixed(2);
+            
+            // Enable/disable proceed button
+            const proceedButton = document.getElementById('proceedButton');
+            proceedButton.disabled = selectedSeats.length === 0 || !selectedTime || !selectedAuditorium;
+        }
+
+        async function processBooking() {
+            const proceedButton = document.getElementById('proceedButton');
+            const proceedText = document.getElementById('proceed-text');
+            const spinner = document.getElementById('proceed-spinner');
+            
+            try {
+                // Show loading state
+                proceedText.textContent = 'Processing...';
+                spinner.style.display = 'inline-block';
+                proceedButton.disabled = true;
+                
+                // Validate selections
+                if (!selectedMovie || !selectedDate || !selectedTime || !selectedAuditorium || selectedSeats.length === 0) {
+                    throw new Error('Please complete all selections');
+                }
+                
+                // Create booking object
+                const booking = {
+                    userId: localStorage.getItem('userId'),
+                    movieId: selectedMovie.id,
+                    movieTitle: selectedMovie.title,
+                    date: selectedDate,
+                    time: selectedTime,
+                    auditorium: selectedAuditorium.id,
+                    seats: selectedSeats,
+                    total: parseFloat(document.getElementById('total-price').textContent),
+                    status: 'confirmed'
+                };
+                
+                // In a real app, you would send this to your backend
+                // For now, we'll save to localStorage
+                const userTickets = JSON.parse(localStorage.getItem('userTickets')) || [];
+                const bookingId = 'VOX-' + Date.now().toString(36).toUpperCase();
+                userTickets.push({
+                    ...booking,
+                    bookingId,
+                    qrCode: `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${bookingId}`
+                });
+                
+                localStorage.setItem('userTickets', JSON.stringify(userTickets));
+                
+                // Redirect to confirmation
+                window.location.href = `confirmation.html?id=${bookingId}`;
+                
+            } catch (error) {
+                console.error('Booking error:', error);
+                showError(error.message);
+                
+                // Reset button state
+                proceedText.textContent = 'Proceed to Payment';
+                spinner.style.display = 'none';
+                proceedButton.disabled = false;
+            }
+        }
+
+        function showError(message) {
+            // Remove any existing error messages
+            document.querySelectorAll('.error-message').forEach(el => el.remove());
+            
+            const errorElement = document.createElement('div');
+            errorElement.className = 'error-message';
+            errorElement.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${message}`;
+            
+            // Insert at the top of main
+            document.querySelector('main').prepend(errorElement);
+            
+            // Scroll to error
+            errorElement.scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,1383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cinema Snacks & Drinks | VOX Cinemas</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #00c2ff;
+            --dark: #0f0f1a;
+            --light: #f8f9fa;
+            --accent: #ff4d8d;
+            --success: #28a745;
+            --card-bg: rgba(15, 15, 26, 0.7);
+            --warning: #ffc107;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--dark);
+            color: var(--light);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            background-image: linear-gradient(rgba(15, 15, 26, 0.9), rgba(15, 15, 26, 0.9)), 
+                            url('https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
+        }
+
+        /* Modern Header Styles */
+        header {
+            background: linear-gradient(135deg, #000000 0%, #1a1a2e 100%);
+            padding: 1rem 2rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(to right, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-icon {
+            font-size: 1.8rem;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            align-items: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        .nav-links a {
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            font-size: 1.1rem;
+            position: relative;
+            padding: 0.5rem 0;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--primary);
+        }
+
+        .nav-links a.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--primary);
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), 
+                        url('https://images.unsplash.com/photo-1551632811-561732d1e306?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');
+            background-size: cover;
+            background-position: center;
+            height: 300px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin: 0;
+            color: white;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 1rem 0 0;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        /* Main Content */
+        .food-container {
+            max-width: 1200px;
+            margin: 0 auto 3rem;
+            padding: 0 2rem;
+        }
+
+        .section-title {
+            color: var(--primary);
+            font-size: 2rem;
+            text-align: center;
+            margin-bottom: 2rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(to right, var(--primary), var(--accent));
+        }
+
+        /* Category Navigation */
+        .category-nav {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .category-btn {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.8rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .category-btn:hover, .category-btn.active {
+            background: var(--primary);
+            color: var(--dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 194, 255, 0.3);
+        }
+
+        .category-btn i {
+            font-size: 1.2rem;
+        }
+
+        /* Menu Grid */
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .menu-item {
+            background: var(--card-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s;
+            position: relative;
+            border: 1px solid rgba(0, 194, 255, 0.2);
+        }
+
+        .menu-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 194, 255, 0.2);
+            border-color: var(--primary);
+        }
+
+        .menu-item-img-container {
+            height: 200px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .menu-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+
+        .menu-item:hover img {
+            transform: scale(1.1);
+        }
+
+        .menu-item-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: var(--accent);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .menu-item-info {
+            padding: 1.5rem;
+        }
+
+        .menu-item h3 {
+            margin: 0 0 0.5rem;
+            color: var(--primary);
+            font-size: 1.3rem;
+        }
+
+        .menu-item p {
+            margin: 0 0 1rem;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.95rem;
+            line-height: 1.5;
+            min-height: 60px;
+        }
+
+        .menu-item-price {
+            color: var(--accent);
+            font-weight: bold;
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .dietary-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .dietary-tag {
+            background: rgba(0, 194, 255, 0.2);
+            color: var(--primary);
+            padding: 0.2rem 0.6rem;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 500;
+        }
+
+        .add-to-cart {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.8rem;
+            border-radius: 8px;
+            width: 100%;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .add-to-cart:hover {
+            background: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        /* Floating Cart Button */
+        .cart-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--accent);
+            color: white;
+            border: none;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(255, 77, 141, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            z-index: 100;
+            transition: all 0.3s;
+        }
+
+        .cart-btn:hover {
+            transform: scale(1.1) translateY(-5px);
+            box-shadow: 0 6px 20px rgba(255, 77, 141, 0.6);
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: white;
+            color: var(--accent);
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        /* Checkout Modal */
+        .checkout-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            overflow-y: auto;
+        }
+
+        .checkout-content {
+            position: absolute;
+            top: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 800px;
+            background: var(--card-bg);
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .close-checkout {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .checkout-title {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        /* Order Summary */
+        .order-summary {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+        }
+
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .item-actions {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .quantity-control {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .quantity-btn {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: none;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+        }
+
+        .quantity-btn:hover {
+            background: var(--primary);
+        }
+
+        .remove-item {
+            background: transparent;
+            border: none;
+            color: var(--accent);
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .order-total {
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 2px solid var(--primary);
+        }
+
+        /* Payment Options */
+        .payment-options {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .payment-option {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+
+        .payment-option:hover {
+            border-color: var(--primary);
+        }
+
+        .payment-option.selected {
+            border-color: var(--accent);
+            background: rgba(0, 194, 255, 0.1);
+        }
+
+        .payment-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        /* Payment Forms */
+        .payment-form {
+            display: none;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+        }
+
+        .payment-form.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.8rem;
+            border-radius: 5px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+        }
+
+        /* Submit Button */
+        .submit-payment {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 1rem;
+            border-radius: 5px;
+            width: 100%;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 1rem;
+        }
+
+        .submit-payment:hover {
+            background: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        /* Success Message */
+        .payment-success {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .payment-success i {
+            font-size: 4rem;
+            color: var(--success);
+            margin-bottom: 1rem;
+        }
+
+        /* Success Message */
+        .success-message {
+            background: rgba(40, 167, 69, 0.2);
+            color: var(--success);
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 1rem 0;
+            text-align: center;
+            display: none;
+        }
+
+        /* Loading Spinner */
+        .loading-spinner {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: var(--primary);
+            animation: spin 1s ease-in-out infinite;
+            margin: 2rem auto;
+            display: block;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Error Message */
+        .error-message {
+            background: rgba(255, 77, 141, 0.2);
+            color: var(--accent);
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+            margin: 2rem 0;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .payment-options {
+                flex-direction: column;
+            }
+            
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+            
+            .category-nav {
+                gap: 0.5rem;
+            }
+            
+            .category-btn {
+                padding: 0.6rem 1rem;
+                font-size: 0.9rem;
+            }
+            
+            .menu-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav-links {
+                gap: 1rem;
+            }
+        }
+        .payment-status-approved {
+            color: var(--success);
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <!-- Modern Header -->
+    <header>
+        <nav>
+            <a href="main.html" class="logo">
+                <i class="fas fa-film logo-icon"></i>
+                <span>VOX</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="main.html">Movies</a></li>
+                <li><a href="food.html" class="active">Snacks & Drinks</a></li>
+                <li><a href="mytickets.html">My Tickets</a></li>
+                <li><a href="index.html" id="loginBtn">Login</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1>Cinema Snacks & Drinks</h1>
+        <p>Pre-order your favorite treats to enjoy during the movie. Our menu features delicious options for every taste!</p>
+    </section>
+
+    <!-- Main Content -->
+    <div class="food-container">
+        <h2 class="section-title">Our Menu</h2>
+        
+        <!-- Category Navigation -->
+        <div class="category-nav" id="categoryNav">
+            <!-- Categories will be loaded dynamically -->
+        </div>
+        
+        <!-- Success Message -->
+        <div class="success-message" id="successMessage">
+            <i class="fas fa-check-circle"></i> <span id="successText"></span>
+        </div>
+        
+        <!-- Menu Grid -->
+        <div class="menu-grid" id="menuGrid">
+            <div class="loading-spinner"></div>
+        </div>
+    </div>
+    
+    <!-- Floating Cart Button -->
+    <button class="cart-btn" id="viewCartBtn">
+        <i class="fas fa-shopping-cart"></i>
+        <span class="cart-count" id="cartCount">0</span>
+    </button>
+    
+    <!-- Checkout Modal -->
+    <div class="checkout-modal" id="checkoutModal">
+        <div class="checkout-content">
+            <span class="close-checkout" id="closeCheckout">&times;</span>
+            <h2 class="checkout-title">Complete Your Order</h2>
+            
+            <div class="order-summary" id="orderSummary">
+                <!-- Order items will be loaded here -->
+            </div>
+            
+            <h3>Payment Method</h3>
+            <div class="payment-options">
+                <div class="payment-option" id="visaOption">
+                    <div class="payment-icon"><i class="fab fa-cc-visa"></i></div>
+                    <h4>Credit/Debit Card</h4>
+                    <p>Secure online payment</p>
+                </div>
+                <div class="payment-option" id="cashOption">
+                    <div class="payment-icon"><i class="fas fa-money-bill-wave"></i></div>
+                    <h4>Pay at Cinema</h4>
+                    <p>Pay when you pick up</p>
+                </div>
+            </div>
+            
+            <!-- Visa Payment Form -->
+            <div class="payment-form" id="visaForm">
+                <div class="form-group">
+                    <label for="cardNumber">Card Number</label>
+                    <input type="text" id="cardNumber" placeholder="1234 5678 9012 3456">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="expiryDate">Expiry Date</label>
+                        <input type="text" id="expiryDate" placeholder="MM/YY">
+                    </div>
+                    <div class="form-group">
+                        <label for="cvv">CVV</label>
+                        <input type="text" id="cvv" placeholder="123">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="cardName">Name on Card</label>
+                    <input type="text" id="cardName" placeholder="Ahmed yasser">
+                </div>
+                <button class="submit-payment" id="submitVisa">Pay Now</button>
+            </div>
+            <div class="payment-form" id="paymentProcessing">
+                <div class="payment-success">
+                    <div class="loading-spinner"></div>
+                    <h3>Processing Payment...</h3>
+                    <p>Please wait while we process your payment</p>
+                </div>
+            </div>
+            
+            <!-- Cash Payment Confirmation -->
+            <div class="payment-form" id="cashForm">
+                <div class="payment-success">
+                    <i class="fas fa-check-circle"></i>
+                    <h3>Order Reserved!</h3>
+                    <p>Your food will be prepared and ready for pickup when you arrive at the cinema.</p>
+                    <p>Please pay at the concession stand.</p>
+                    <button class="submit-payment" id="confirmCash">OK</button>
+                </div>
+            </div>
+            
+            <!-- Visa Payment Success -->
+            <div class="payment-form" id="visaSuccess">
+                <div class="payment-success">
+                    <i class="fas fa-check-circle"></i>
+                    <h3>Payment Approved!</h3>
+                    <p>Your payment was successful and your order is confirmed.</p>
+                    <div class="order-confirmation-details">
+                        <p><strong>Order Reference:</strong> <span id="orderReference">VOX-${Math.floor(Math.random() * 1000000)}</span></p>
+                        <p><strong>Total Paid:</strong> <span id="totalPaid">$${cart.reduce((sum, item) => sum + (item.price * item.quantity), 0).toFixed(2)}</span></p>
+                        <p><strong>Payment Method:</strong> Visa ending in ****${document.getElementById('cardNumber').value.slice(-4)}</p>
+                        <p><strong>Status:</strong> <span class="payment-status-approved">Approved</span></p>
+                    </div>
+                    <button class="submit-payment" id="confirmVisa">Done</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let menuItems = [];
+        let categories = [];
+        let cart = JSON.parse(localStorage.getItem('foodCart')) || [];
+        let selectedPaymentMethod = null;
+        
+        // DOM Elements
+        const menuGrid = document.getElementById('menuGrid');
+        const loginBtn = document.getElementById('loginBtn');
+        const categoryNav = document.getElementById('categoryNav');
+        const viewCartBtn = document.getElementById('viewCartBtn');
+        const cartCount = document.getElementById('cartCount');
+        const successMessage = document.getElementById('successMessage');
+        const successText = document.getElementById('successText');
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', async () => {
+            checkLoginStatus();
+            await loadFoodMenu();
+            updateCartCount();
+            initCheckoutModal();
+        });
+
+        // Check login status
+        function checkLoginStatus() {
+            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+            loginBtn.textContent = isLoggedIn ? 'Logout' : 'Login';
+            
+            loginBtn.addEventListener('click', (e) => {
+                if (isLoggedIn) {
+                    e.preventDefault();
+                    localStorage.removeItem('isLoggedIn');
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('user');
+                    localStorage.removeItem('foodCart');
+                    window.location.href = 'index.html';
+                }
+            });
+        }
+
+        // Load food menu and categories
+        async function loadFoodMenu() {
+            try {
+                // Show loading state
+                menuGrid.innerHTML = '<div class="loading-spinner"></div>';
+                
+                // Load categories and menu items from your backend
+                const [categoriesRes, menuRes] = await Promise.all([
+                    fetch('http://localhost:3000/api/food/categories'),
+                    fetch('http://localhost:3000/api/food/menu')
+                ]);
+                
+                if (!categoriesRes.ok || !menuRes.ok) {
+                    throw new Error('Failed to load menu data');
+                }
+                
+                categories = await categoriesRes.json();
+                const menuData = await menuRes.json();
+                
+                // Flatten the menu items
+                menuItems = [];
+                menuData.forEach(category => {
+                    if (category.items && Array.isArray(category.items)) {
+                        menuItems.push(...category.items.map(item => ({
+                            ...item,
+                            categoryName: category.name,
+                            categoryId: category.id
+                        })));
+                    }
+                });
+                
+                if (menuItems.length === 0) {
+                    throw new Error('No food items available');
+                }
+                
+                renderCategoryNav();
+                renderMenu(menuItems);
+            } catch (error) {
+                console.error('Food menu error:', error);
+                menuGrid.innerHTML = `
+                    <div class="error-message">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <h3>${error.message}</h3>
+                        <button onclick="loadFoodMenu()" class="add-to-cart">
+                            <i class="fas fa-sync-alt"></i> Try Again
+                        </button>
+                    </div>
+                `;
+            }
+        }
+        // Render category navigation
+        function renderCategoryNav() {
+            // Add "All" button first
+            categoryNav.innerHTML = `
+                <button class="category-btn active" data-category="all">
+                    <i class="fas fa-utensils"></i>
+                    <span>All Items</span>
+                </button>
+            `;
+            
+            // Add category buttons
+            categories.forEach(category => {
+                const icon = getCategoryIcon(category.name);
+                categoryNav.innerHTML += `
+                    <button class="category-btn" data-category="${category.id}">
+                        <i class="fas fa-${icon}"></i>
+                        <span>${category.name}</span>
+                    </button>
+                `;
+            });
+            
+            // Add event listeners
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    filterMenuItems(btn.dataset.category);
+                });
+            });
+        }
+
+        // Get appropriate icon for each category
+        function getCategoryIcon(categoryName) {
+            const lowerName = categoryName.toLowerCase();
+            if (lowerName.includes('popcorn') || lowerName.includes('snack')) return 'popcorn';
+            if (lowerName.includes('beverage') || lowerName.includes('drink')) return 'glass-whiskey';
+            if (lowerName.includes('candy') || lowerName.includes('chocolate')) return 'candy-cane';
+            if (lowerName.includes('hot') || lowerName.includes('food')) return 'hamburger';
+            if (lowerName.includes('combo')) return 'tags';
+            return 'utensils';
+        }
+
+        // Filter menu items by category
+        function filterMenuItems(categoryId) {
+            const filtered = categoryId === 'all' 
+                ? menuItems 
+                : menuItems.filter(item => item.categoryId == categoryId);
+            renderMenu(filtered);
+        }
+
+        // Render menu items
+        function renderMenu(items) {
+            if (items.length === 0) {
+                menuGrid.innerHTML = '<div class="error-message">No items found in this category</div>';
+                return;
+            }
+            
+            menuGrid.innerHTML = items.map(item => `
+                <div class="menu-item" data-id="${item.id}" data-category="${item.categoryId}">
+                    <div class="menu-item-img-container">
+                        <img src="${item.image_url || 'https://via.placeholder.com/300x200?text=No+Image'}" 
+                             alt="${item.name}"
+                             onerror="this.src='https://via.placeholder.com/300x200?text=No+Image'">
+                        ${item.is_new ? '<span class="menu-item-badge">NEW</span>' : ''}
+                    </div>
+                    <div class="menu-item-info">
+                        <h3>${item.name}</h3>
+                        <p>${item.description || 'Delicious cinema treat'}</p>
+                        
+                        ${item.dietary_info ? `
+                        <div class="dietary-tags">
+                            ${item.dietary_info.vegetarian ? '<span class="dietary-tag">Vegetarian</span>' : ''}
+                            ${item.dietary_info.vegan ? '<span class="dietary-tag">Vegan</span>' : ''}
+                            ${item.dietary_info.glutenFree ? '<span class="dietary-tag">Gluten Free</span>' : ''}
+                        </div>
+                        ` : ''}
+                        
+                        <span class="menu-item-price">$${item.price.toFixed(2)}</span>
+                        <button class="add-to-cart" data-id="${item.id}">
+                            <i class="fas fa-cart-plus"></i> Add to Order
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+            
+            // Add event listeners to "Add to Cart" buttons
+            document.querySelectorAll('.add-to-cart').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const itemId = parseInt(this.dataset.id);
+                    const item = menuItems.find(i => i.id == itemId);
+                    
+                    if (item) {
+                        addToCart(item);
+                    }
+                });
+            });
+        }
+
+        // Add item to cart
+        function addToCart(item, quantity = 1) {
+            const existingItem = cart.find(i => i.id === item.id);
+            
+            if (existingItem) {
+                existingItem.quantity += quantity;
+            } else {
+                cart.push({
+                    id: item.id,
+                    name: item.name,
+                    price: item.price,
+                    image_url: item.image_url,
+                    quantity: quantity
+                });
+            }
+            
+            updateCart();
+            showSuccessMessage(`${item.name} added to your order`);
+        }
+
+        // Update cart in storage and UI
+        function updateCart() {
+            localStorage.setItem('foodCart', JSON.stringify(cart));
+            updateCartCount();
+            
+            // If checkout modal is open, update the order summary
+            if (document.getElementById('checkoutModal').style.display === 'block') {
+                renderOrderSummary();
+            }
+        }
+
+        // Update cart count
+        function updateCartCount() {
+            const count = cart.reduce((total, item) => total + item.quantity, 0);
+            cartCount.textContent = count;
+        }
+
+        // Show success message
+        function showSuccessMessage(message) {
+            successText.textContent = message;
+            successMessage.style.display = 'block';
+            
+            setTimeout(() => {
+                successMessage.style.display = 'none';
+            }, 3000);
+        }
+
+        // Initialize checkout modal
+        function initCheckoutModal() {
+            const checkoutModal = document.getElementById('checkoutModal');
+            const closeCheckout = document.getElementById('closeCheckout');
+            const viewCartBtn = document.getElementById('viewCartBtn');
+            
+            viewCartBtn.addEventListener('click', () => {
+                if (cart.length === 0) {
+                    showSuccessMessage('Your cart is empty');
+                    return;
+                }
+                openCheckoutModal();
+            });
+            
+            closeCheckout.addEventListener('click', closeCheckoutModal);
+            
+            // Payment option selection
+            document.getElementById('visaOption').addEventListener('click', () => {
+                selectPaymentMethod('visa');
+            });
+            
+            document.getElementById('cashOption').addEventListener('click', () => {
+                selectPaymentMethod('cash');
+            });
+            
+            // Form submission
+            document.getElementById('submitVisa').addEventListener('click', processVisaPayment);
+            document.getElementById('confirmCash').addEventListener('click', completeCashPayment);
+            document.getElementById('confirmVisa').addEventListener('click', completeVisaPayment);
+        }
+
+        // Open checkout modal
+        function openCheckoutModal() {
+            const checkoutModal = document.getElementById('checkoutModal');
+            document.body.style.overflow = 'hidden';
+            checkoutModal.style.display = 'block';
+            renderOrderSummary();
+            resetPaymentForms();
+        }
+
+        // Close checkout modal
+        function closeCheckoutModal() {
+            const checkoutModal = document.getElementById('checkoutModal');
+            document.body.style.overflow = 'auto';
+            checkoutModal.style.display = 'none';
+        }
+
+        // Render order summary with quantity controls
+        function renderOrderSummary() {
+            const orderSummary = document.getElementById('orderSummary');
+            let html = '<h3>Your Order</h3>';
+            
+            if (cart.length === 0) {
+                html += '<p>Your cart is empty</p>';
+                orderSummary.innerHTML = html;
+                return;
+            }
+            
+            cart.forEach(item => {
+                html += `
+                    <div class="order-item">
+                        <div>
+                            <span>${item.name}</span>
+                            <span class="menu-item-price">$${item.price.toFixed(2)} each</span>
+                        </div>
+                        <div class="item-actions">
+                            <div class="quantity-control">
+                                <button class="quantity-btn" data-id="${item.id}" data-action="decrease">-</button>
+                                <span>${item.quantity}</span>
+                                <button class="quantity-btn" data-id="${item.id}" data-action="increase">+</button>
+                            </div>
+                            <span>$${(item.price * item.quantity).toFixed(2)}</span>
+                            <button class="remove-item" data-id="${item.id}">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            html += `
+                <div class="order-total">
+                    <span>Total:</span>
+                    <span>$${total.toFixed(2)}</span>
+                </div>
+            `;
+            
+            orderSummary.innerHTML = html;
+            
+            // Add event listeners to quantity buttons
+            document.querySelectorAll('.quantity-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const itemId = parseInt(this.dataset.id);
+                    const action = this.dataset.action;
+                    updateCartItemQuantity(itemId, action);
+                });
+            });
+            
+            // Add event listeners to remove buttons
+            document.querySelectorAll('.remove-item').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const itemId = parseInt(this.dataset.id);
+                    removeFromCart(itemId);
+                });
+            });
+        }
+
+        // Update item quantity in cart
+        function updateCartItemQuantity(itemId, action) {
+            const itemIndex = cart.findIndex(item => item.id === itemId);
+            
+            if (itemIndex === -1) return;
+            
+            if (action === 'increase') {
+                cart[itemIndex].quantity += 1;
+            } else if (action === 'decrease') {
+                if (cart[itemIndex].quantity > 1) {
+                    cart[itemIndex].quantity -= 1;
+                } else {
+                    // If quantity would go to 0, remove the item
+                    cart.splice(itemIndex, 1);
+                }
+            }
+            
+            updateCart();
+            
+            // If cart is now empty, close the modal
+            if (cart.length === 0) {
+                closeCheckoutModal();
+                showSuccessMessage('Your cart is now empty');
+            }
+        }
+
+        // Remove item from cart
+        function removeFromCart(itemId) {
+            cart = cart.filter(item => item.id !== itemId);
+            updateCart();
+            
+            // If cart is now empty, close the modal
+            if (cart.length === 0) {
+                closeCheckoutModal();
+                showSuccessMessage('Your cart is now empty');
+            } else {
+                showSuccessMessage('Item removed from cart');
+            }
+        }
+
+        // Select payment method
+        function selectPaymentMethod(method) {
+            selectedPaymentMethod = method;
+            
+            // Update UI
+            document.querySelectorAll('.payment-option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            
+            document.querySelectorAll('.payment-form').forEach(form => {
+                form.classList.remove('active');
+            });
+            
+            if (method === 'visa') {
+                document.getElementById('visaOption').classList.add('selected');
+                document.getElementById('visaForm').classList.add('active');
+            } else if (method === 'cash') {
+                document.getElementById('cashOption').classList.add('selected');
+                document.getElementById('cashForm').classList.add('active');
+            }
+        }
+
+        // Reset payment forms
+        function resetPaymentForms() {
+            selectedPaymentMethod = null;
+            document.querySelectorAll('.payment-option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            
+            document.querySelectorAll('.payment-form').forEach(form => {
+                form.classList.remove('active');
+            });
+            
+            // Clear form fields
+            document.getElementById('cardNumber').value = '';
+            document.getElementById('expiryDate').value = '';
+            document.getElementById('cvv').value = '';
+            document.getElementById('cardName').value = '';
+        }
+
+        // Process Visa payment
+          async function processVisaPayment() {
+            const cardNumber = document.getElementById('cardNumber').value;
+            const expiryDate = document.getElementById('expiryDate').value;
+            const cvv = document.getElementById('cvv').value;
+            const cardName = document.getElementById('cardName').value;
+            
+            // Validation
+            if (!cardNumber || !expiryDate || !cvv || !cardName) {
+                showSuccessMessage('Please fill all payment details');
+                return;
+            }
+            
+            if (!/^\d{16}$/.test(cardNumber.replace(/\s/g, ''))) {
+                showSuccessMessage('Please enter a valid 16-digit card number');
+                return;
+            }
+            
+            if (!/^\d{2}\/\d{2}$/.test(expiryDate)) {
+                showSuccessMessage('Please enter expiry date in MM/YY format');
+                return;
+            }
+            
+            if (!/^\d{3,4}$/.test(cvv)) {
+                showSuccessMessage('Please enter a valid CVV (3-4 digits)');
+                return;
+            }
+            
+            // Show processing state
+            document.getElementById('visaForm').classList.remove('active');
+            document.getElementById('paymentProcessing').classList.add('active');
+            
+            // Show loading state on button
+            const button = document.getElementById('submitVisa');
+            const originalText = button.innerHTML;
+            button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+            button.disabled = true;
+            
+            try {
+                const token = localStorage.getItem('token');
+                if (!token) {
+                    throw new Error('You must be logged in to complete payment');
+                }
+                
+                const user = JSON.parse(localStorage.getItem('user'));
+                const booking = JSON.parse(localStorage.getItem('currentBooking') || null);
+                
+                // Calculate total
+                const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+                
+                // Prepare items in the format your backend expects
+                const orderItems = cart.map(item => ({
+                    food_item_id: item.id,  // Match your database column name
+                    quantity: item.quantity,
+                    price_at_order: item.price,  // Match your database column name
+                    special_instructions: ''
+                }));
+                
+                // Create order payload that matches your backend expectations
+                const orderPayload = {
+                    booking_id: booking?.id || null,
+                    items: orderItems,
+                    total_amount: total,
+                    payment_method: 'card',
+                    special_requests: 'Online payment via Visa'
+                };
+                
+                console.log('Sending order payload:', orderPayload); // Debug log
+                
+                // Send to your backend API
+                const response = await fetch('http://localhost:3000/api/food/orders', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify(orderPayload)
+                });
+                
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || 'Failed to process payment');
+                }
+                
+                const result = await response.json();
+                console.log('Order created:', result); // Debug log
+                
+                // Show success
+                document.getElementById('paymentProcessing').classList.remove('active');
+                document.getElementById('visaSuccess').classList.add('active');
+                
+                // Update order reference in the success message
+                document.getElementById('orderReference').textContent = result.orderReference;
+                document.getElementById('totalPaid').textContent = `$${total.toFixed(2)}`;
+                
+                // Clear cart
+                cart = [];
+                updateCart();
+                
+            } catch (error) {
+                console.error('Payment error:', error);
+                // Show error state
+                document.getElementById('paymentProcessing').classList.remove('active');
+                document.getElementById('visaForm').classList.add('active');
+                showSuccessMessage(`Payment failed: ${error.message}`);
+            } finally {
+                button.innerHTML = originalText;
+                button.disabled = false;
+            }
+        }
+
+        // Process Cash payment with backend integration
+        async function completeCashPayment() {
+            // Show loading state
+            const button = document.getElementById('confirmCash');
+            const originalText = button.innerHTML;
+            button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+            button.disabled = true;
+            
+            try {
+                const token = localStorage.getItem('token');
+                if (!token) {
+                    throw new Error('You must be logged in to complete payment');
+                }
+                
+                const user = JSON.parse(localStorage.getItem('user'));
+                const booking = JSON.parse(localStorage.getItem('currentBooking') || null);
+                
+                // Calculate total
+                const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+                
+                // Prepare items in the format your backend expects
+                const orderItems = cart.map(item => ({
+                    food_item_id: item.id,  // Match your database column name
+                    quantity: item.quantity,
+                    price_at_order: item.price,  // Match your database column name
+                    special_instructions: ''
+                }));
+                
+                // Create order payload that matches your backend expectations
+                const orderPayload = {
+                    booking_id: booking?.id || null,
+                    items: orderItems,
+                    total_amount: total,
+                    payment_method: 'cash',
+                    special_requests: 'Will pay at cinema'
+                };
+                
+                console.log('Sending order payload:', orderPayload); // Debug log
+                
+                // Send to your backend API
+                const response = await fetch('http://localhost:3000/api/food/orders', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify(orderPayload)
+                });
+                
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || 'Failed to create order');
+                }
+                
+                const result = await response.json();
+                console.log('Order created:', result); // Debug log
+                
+                // Clear cart
+                cart = [];
+                updateCart();
+                
+                // Close modal immediately after successful processing
+                closeCheckoutModal();
+                showSuccessMessage(`Order #${result.orderReference} reserved! Pay $${total.toFixed(2)} at the cinema.`);
+                
+            } catch (error) {
+                console.error('Order error:', error);
+                showSuccessMessage(`Order failed: ${error.message}`);
+            } finally {
+                button.innerHTML = originalText;
+                button.disabled = false;
+            }
+        }
+
+        // Complete Visa payment
+        function completeVisaPayment() {
+            closeCheckoutModal();
+            showSuccessMessage('Payment successful! Your order is confirmed.');
+        }
+    </script>
+</body>
+</html>

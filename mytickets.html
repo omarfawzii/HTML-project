@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Tickets | VOX Cinemas</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary: #00c2ff;
+            --dark: #0f0f1a;
+            --light: #f8f9fa;
+            --accent: #ff4d8d;
+            --success: #28a745;
+            --warning: #ffc107;
+            --danger: #dc3545;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--dark);
+            color: var(--light);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+        
+        .hamburger {
+    display: none;
+    cursor: pointer;
+    padding: 10px;
+}
+
+.hamburger .line {
+    width: 25px;
+    height: 3px;
+    background-color: white;
+    margin: 5px;
+    transition: all 0.3s ease;
+}
+
+.dropdown {
+    position: relative;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: var(--dark);
+    min-width: 200px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+    z-index: 1;
+}
+
+.dropdown:hover .dropdown-menu {
+    display: block;
+}
+
+.dropdown-menu li {
+    padding: 0;
+}
+
+.dropdown-menu a {
+    padding: 12px 16px;
+    display: block;
+}
+
+@media (max-width: 768px) {
+    .hamburger {
+        display: block;
+    }
+    
+    .nav-links {
+        display: none;
+        position: absolute;
+        top: 70px;
+        left: 0;
+        right: 0;
+        background: var(--dark);
+        flex-direction: column;
+        align-items: center;
+        padding: 20px 0;
+    }
+    
+    .nav-links.active {
+        display: flex;
+    }
+    
+    .dropdown-menu {
+        position: static;
+        box-shadow: none;
+    }
+}
+        header {
+            background: linear-gradient(135deg, #000000 0%, #1a1a2e 100%);
+            padding: 1rem 2rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .logo {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(to right, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+        
+        nav a {
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        nav a:hover {
+            color: var(--primary);
+        }
+        
+        main {
+            max-width: 1200px;
+            margin: 3rem auto;
+            padding: 2rem;
+        }
+        
+        h2 {
+            color: var(--primary);
+            margin-bottom: 2rem;
+            font-size: 2rem;
+            text-align: center;
+        }
+        
+        .tickets-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+        
+        .ticket-card {
+            background: rgba(15, 15, 26, 0.8);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid var(--primary);
+            position: relative;
+            transition: transform 0.3s;
+        }
+        
+        .ticket-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .ticket-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .ticket-movie {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--primary);
+        }
+        
+        .ticket-status {
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .status-confirmed {
+            background-color: rgba(40, 167, 69, 0.2);
+            color: var(--success);
+        }
+        
+        .status-pending {
+            background-color: rgba(255, 193, 7, 0.2);
+            color: var(--warning);
+        }
+        
+        .status-refund-requested {
+            background-color: rgba(255, 77, 141, 0.2);
+            color: var(--accent);
+        }
+        
+        .ticket-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .ticket-qr {
+            text-align: center;
+            margin-top: 1rem;
+        }
+        
+        .ticket-qr img {
+            width: 120px;
+            height: 120px;
+            background: white;
+            padding: 8px;
+            border-radius: 8px;
+        }
+        
+        .no-tickets {
+            text-align: center;
+            padding: 3rem;
+            color: var(--primary);
+        }
+        
+        .cancel-btn {
+            background: rgba(220, 53, 69, 0.2);
+            color: var(--danger);
+            border: 1px solid var(--danger);
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 1rem;
+            display: block;
+            width: 100%;
+        }
+        
+        .cancel-btn:hover {
+            background: rgba(220, 53, 69, 0.4);
+        }
+        
+        .book-button {
+            display: inline-block;
+            margin-top: 1rem;
+            padding: 0.6rem 1.5rem;
+            background: var(--primary);
+            color: white;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        .refund-policy {
+            background: rgba(255, 193, 7, 0.1);
+            border-left: 4px solid var(--warning);
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            font-size: 0.9rem;
+        }
+        
+        .refund-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .view-receipt {
+            background: rgba(0, 194, 255, 0.2);
+            color: var(--primary);
+            border: 1px solid var(--primary);
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+            flex: 1;
+            text-align: center;
+        }
+        
+        .view-receipt:hover {
+            background: rgba(0, 194, 255, 0.4);
+        }
+        
+        @media (max-width: 768px) {
+            nav {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            nav ul {
+                gap: 1rem;
+                padding: 0;
+            }
+            
+            .tickets-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">VOX</div>
+            <div class="hamburger" id="hamburger">
+                <div class="line"></div>
+                <div class="line"></div>
+                <div class="line"></div>
+            </div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="main.html" class="active">Home</a></li>
+                <li class="dropdown">
+                    <a href="#">Movies <i class="fas fa-chevron-down"></i></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="main.html">Now Showing</a></li>
+                        <li><a href="upcoming.html">Coming Soon</a></li>
+                        <li><a href="food.html">Food & Drinks</a></li>
+                    </ul>
+                </li>
+                <li><a href="mytickets.html">My Tickets</a></li>
+                <li><a href="index.html" id="loginBtn" class="login-btn">Login</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <h2>My Tickets</h2>
+        <div id="tickets-container" class="tickets-container"></div>
+        <div id="no-tickets" class="no-tickets" style="display: none;">
+            <h3>You don't have any tickets yet</h3>
+            <p>Book your next movie experience now!</p>
+            <a href="main.html" class="book-button">Browse Movies</a>
+        </div>
+    </main>
+    <script>
+     document.addEventListener('DOMContentLoaded', async function() {
+    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    if (!isLoggedIn) {
+        alert('Please log in to view your tickets.');
+        window.location.href = 'index.html';
+        return;
+    }
+
+    const user = JSON.parse(localStorage.getItem('user'));
+    const token = localStorage.getItem('token');
+    
+    try {
+        const response = await fetch(`${API_BASE_URL}/api/bookings?userId=${user.id}`, {
+            headers: { 
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            }
+        });
+        
+        if (!response.ok) throw new Error('Failed to load tickets');
+        
+        const bookings = await response.json();
+        
+        if (bookings.length === 0) {
+            document.getElementById('no-tickets').style.display = 'block';
+            return;
+        }
+        
+        const ticketsContainer = document.getElementById('tickets-container');
+        ticketsContainer.innerHTML = '';
+        
+        bookings.forEach(booking => {
+            const ticket = document.createElement('div');
+            ticket.className = 'ticket-card';
+            ticket.innerHTML = `
+                <div class="ticket-header">
+                    <div class="ticket-movie">${booking.movie_title}</div>
+                    <div class="ticket-status ${booking.status === 'confirmed' ? 'status-confirmed' : 'status-pending'}">
+                        ${booking.status}
+                    </div>
+                </div>
+                <div class="ticket-details">
+                    <p><strong>Date:</strong> ${new Date(booking.showtime_date).toLocaleDateString()}</p>
+                    <p><strong>Time:</strong> ${booking.showtime_time}</p>
+                    <p><strong>Cinema:</strong> ${booking.auditorium_name}</p>
+                    <p><strong>Seats:</strong> ${booking.seats.join(', ')}</p>
+                    <p><strong>Total:</strong> $${booking.total.toFixed(2)}</p>
+                </div>
+                <div class="ticket-qr">
+                    <img src="${generateQRCode(booking.booking_reference)}" alt="Ticket QR Code">
+                </div>
+                ${booking.status === 'confirmed' ? '' : `
+                <button class="cancel-btn" data-id="${booking.id}">
+                    Cancel Booking
+                </button>`}
+            `;
+            ticketsContainer.appendChild(ticket);
+        });
+        
+        // Add cancel handlers
+        document.querySelectorAll('.cancel-btn').forEach(btn => {
+            btn.addEventListener('click', async function() {
+                if (confirm('Are you sure you want to cancel this booking?')) {
+                    try {
+                        const response = await fetch(`${API_BASE_URL}/api/bookings/${this.dataset.id}`, {
+                            method: 'DELETE',
+                            headers: { 
+                                'Authorization': `Bearer ${token}`,
+                                'Content-Type': 'application/json'
+                            }
+                        });
+                        
+                        if (!response.ok) throw new Error('Cancellation failed');
+                        
+                        alert('Booking cancelled successfully');
+                        location.reload();
+                    } catch (error) {
+                        console.error(error);
+                        alert('Failed to cancel booking');
+                    }
+                }
+            });
+        });
+        
+    } catch (error) {
+        console.error(error);
+        document.getElementById('no-tickets').innerHTML = `
+            <h3>Error loading tickets</h3>
+            <p>${error.message}</p>
+            <button onclick="location.reload()">Try Again</button>
+        `;
+        document.getElementById('no-tickets').style.display = 'block';
+    }
+});
+
+function generateQRCode(data) {
+    return `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(data)}`;
+}
+    </script>
+</body>
+</html>

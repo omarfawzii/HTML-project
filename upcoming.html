@@ -1,0 +1,1118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coming Soon | VOX Cinemas</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #00c2ff;
+            --dark: #0f0f1a;
+            --light: #f8f9fa;
+            --accent: #ff4d8d;
+            --card-bg: rgba(15, 15, 26, 0.7);
+            --success: #28a745;
+            --warning: #ffc107;
+            --danger: #dc3545;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--dark);
+            color: var(--light);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            background-image: linear-gradient(rgba(15, 15, 26, 0.9), rgba(15, 15, 26, 0.9)), 
+                            url('https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
+        }
+
+        header {
+            background: linear-gradient(135deg, #000000 0%, #1a1a2e 100%);
+            padding: 1rem 2rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(to right, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-decoration: none;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        nav a {
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            font-size: 1.1rem;
+        }
+
+        nav a:hover, .active {
+            color: var(--primary);
+        }
+
+        .upcoming {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .page-title {
+            color: var(--primary);
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .page-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(to right, var(--primary), var(--accent));
+        }
+
+        /* New Featured Section */
+        .featured-movie {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 3rem;
+            background: var(--card-bg);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+            position: relative;
+            min-height: 400px;
+        }
+
+        .featured-poster {
+            width: 40%;
+            min-width: 300px;
+            object-fit: cover;
+        }
+
+        .featured-content {
+            padding: 2rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .featured-title {
+            color: var(--primary);
+            margin: 0;
+            font-size: 2.5rem;
+            line-height: 1.2;
+        }
+
+        .featured-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .featured-description {
+            line-height: 1.7;
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+        }
+
+        .featured-actions {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 0.8rem 1.8rem;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 194, 255, 0.3);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .btn-outline:hover {
+            background: rgba(0, 194, 255, 0.1);
+        }
+
+        /* Movies Grid */
+        .movies-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .movie-card {
+            background: var(--card-bg);
+            border-radius: 10px;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+        }
+
+        .movie-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .movie-poster {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            border-bottom: 3px solid var(--primary);
+        }
+
+        .movie-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: var(--danger);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        .movie-content {
+            padding: 1.5rem;
+        }
+
+        .movie-title {
+            color: var(--light);
+            margin: 0 0 0.5rem;
+            font-size: 1.3rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .movie-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .movie-rating {
+            color: var(--warning);
+            font-weight: 600;
+        }
+
+        .movie-description {
+            line-height: 1.5;
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .movie-actions {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .btn-sm {
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+        }
+
+        /* Filter controls */
+        .filter-controls {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--light);
+            border: none;
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background: var(--primary);
+            color: var(--dark);
+        }
+
+        /* Countdown section */
+        .countdown-section {
+            text-align: center;
+            margin: 3rem 0;
+        }
+
+        .countdown-title {
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .countdown-container {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .countdown-item {
+            background: rgba(0, 194, 255, 0.1);
+            border: 1px solid var(--primary);
+            border-radius: 8px;
+            padding: 1rem;
+            min-width: 80px;
+        }
+
+        .countdown-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .countdown-label {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        /* Loading states */
+        .loading {
+            text-align: center;
+            padding: 3rem;
+            color: var(--light);
+        }
+
+        .loading i {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Error state */
+        .error-message {
+            text-align: center;
+            padding: 2rem;
+            color: var(--light);
+            background: rgba(220, 53, 69, 0.2);
+            border-radius: 8px;
+            margin: 2rem 0;
+        }
+
+        .error-message i {
+            font-size: 2rem;
+            color: var(--danger);
+            margin-bottom: 1rem;
+        }
+
+        /* Mobile styles */
+        @media (max-width: 768px) {
+            .featured-movie {
+                flex-direction: column;
+                min-height: auto;
+            }
+
+            .featured-poster {
+                width: 100%;
+                min-width: auto;
+                height: 300px;
+            }
+
+            .featured-title {
+                font-size: 1.8rem;
+            }
+
+            .movies-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .movie-poster {
+                height: 350px;
+            }
+
+            .filter-controls {
+                gap: 0.5rem;
+            }
+
+            .filter-btn {
+                padding: 0.5rem 1rem;
+                font-size: 0.9rem;
+            }
+        }
+
+        /* Hamburger menu styles */
+        .hamburger {
+            display: none;
+            cursor: pointer;
+            padding: 10px;
+        }
+
+        .hamburger .line {
+            width: 25px;
+            height: 3px;
+            background-color: white;
+            margin: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: var(--dark);
+            min-width: 200px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+            z-index: 1;
+            border-radius: 0 0 8px 8px;
+        }
+
+        .dropdown:hover .dropdown-menu {
+            display: block;
+        }
+
+        .dropdown-menu li {
+            padding: 0;
+        }
+
+        .dropdown-menu a {
+            padding: 12px 16px;
+            display: block;
+            transition: background 0.3s;
+        }
+
+        .dropdown-menu a:hover {
+            background: rgba(0, 194, 255, 0.2);
+        }
+
+        @media (max-width: 768px) {
+            .hamburger {
+                display: block;
+            }
+            
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 70px;
+                left: 0;
+                right: 0;
+                background: var(--dark);
+                flex-direction: column;
+                align-items: center;
+                padding: 20px 0;
+                box-shadow: 0 10px 15px rgba(0,0,0,0.3);
+            }
+            
+            .nav-links.active {
+                display: flex;
+            }
+            
+            .dropdown-menu {
+                position: static;
+                box-shadow: none;
+                width: 100%;
+                text-align: center;
+            }
+        }
+
+        /* Animation for new releases */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .new-release {
+            animation: pulse 2s infinite;
+            position: relative;
+        }
+
+        .new-release::after {
+            content: 'NEW';
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: var(--accent);
+            color: white;
+            padding: 0.2rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            z-index: 1;
+        }
+        /* Add to your existing styles */
+.loader {
+    text-align: center;
+    padding: 2rem;
+    color: #00c2ff;
+    font-size: 1.2rem;
+}
+
+.movie-card {
+    background: rgba(15, 15, 26, 0.8);
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.3s;
+}
+
+.movie-card:hover {
+    transform: translateY(-5px);
+}
+
+.movie-info {
+    padding: 1rem;
+}
+
+.meta {
+    color: rgba(255,255,255,0.7);
+    font-size: 0.9rem;
+}
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="main.html" class="logo">VOX</a>
+            <div class="hamburger" id="hamburger">
+                <div class="line"></div>
+                <div class="line"></div>
+                <div class="line"></div>
+            </div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="main.html">Home</a></li>
+                <li class="dropdown">
+                    <a href="#">Movies <i class="fas fa-chevron-down"></i></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="main.html">Now Showing</a></li>
+                        <li><a href="upcoming.html" class="active">Coming Soon</a></li>
+                    </ul>
+                </li>
+                <li><a href="mytickets.html">My Tickets</a></li>
+                <li><a href="index.html" id="loginBtn">Login</a></li>
+                <li><a href="food.html">Food & Drinks</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="upcoming">
+        <h1 class="page-title">Coming Soon to VOX Cinemas</h1>
+        
+        <div class="filter-controls">
+            <button class="filter-btn active" data-filter="all">All Movies</button>
+            <button class="filter-btn" data-filter="action">Action</button>
+            <button class="filter-btn" data-filter="drama">Drama</button>
+            <button class="filter-btn" data-filter="sci-fi">Sci-Fi</button>
+            <button class="filter-btn" data-filter="fantasy">Fantasy</button>
+            <button class="filter-btn" data-filter="horror">Horror</button>
+            <button class="filter-btn" data-filter="comedy">Comedy</button>
+        </div>
+        
+        <!-- Featured Movie Section -->
+        <div id="featured-movie-container">
+            <div class="loading"><i class="fas fa-spinner"></i> Loading featured movie...</div>
+        </div>
+        
+        <!-- Countdown to Next Release -->
+        <div class="countdown-section">
+            <h3 class="countdown-title">Next Big Release In:</h3>
+            <div class="countdown-container" id="countdown">
+                <div class="countdown-item">
+                    <div class="countdown-value" id="days">00</div>
+                    <div class="countdown-label">Days</div>
+                </div>
+                <div class="countdown-item">
+                    <div class="countdown-value" id="hours">00</div>
+                    <div class="countdown-label">Hours</div>
+                </div>
+                <div class="countdown-item">
+                    <div class="countdown-value" id="minutes">00</div>
+                    <div class="countdown-label">Minutes</div>
+                </div>
+                <div class="countdown-item">
+                    <div class="countdown-value" id="seconds">00</div>
+                    <div class="countdown-label">Seconds</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- All Upcoming Movies Grid -->
+        <div id="movies-container">
+            <div class="loading"><i class="fas fa-spinner"></i> Loading upcoming movies...</div>
+        </div>
+    </div>
+
+    <script>
+        const moviesContainer = document.getElementById('movies-container');
+        const featuredContainer = document.getElementById('featured-movie-container');
+        const loginBtn = document.getElementById('loginBtn');
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.getElementById('navLinks');
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const countdownDays = document.getElementById('days');
+        const countdownHours = document.getElementById('hours');
+        const countdownMinutes = document.getElementById('minutes');
+        const countdownSeconds = document.getElementById('seconds');
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', () => {
+            checkLoginStatus();
+            loadUpcomingMovies();
+            loadFeaturedMovie();
+            setupHamburgerMenu();
+            setupFilterButtons();
+            updateCountdown();
+            setInterval(updateCountdown, 1000);
+        });
+
+        // Hamburger menu functionality
+        function setupHamburgerMenu() {
+            hamburger.addEventListener('click', () => {
+                navLinks.classList.toggle('active');
+                hamburger.classList.toggle('active');
+            });
+        }
+
+        // Filter buttons functionality
+        function setupFilterButtons() {
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    filterBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    
+                    const filter = btn.dataset.filter;
+                    filterMovies(filter);
+                });
+            });
+        }
+
+        // Filter movies by genre
+        function filterMovies(filter) {
+            const movieCards = document.querySelectorAll('.movie-card');
+            
+            movieCards.forEach(card => {
+                const genres = card.dataset.genres || '';
+                
+                if (filter === 'all' || genres.includes(filter)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        // Check user login status
+        function checkLoginStatus() {
+            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+            loginBtn.textContent = isLoggedIn ? 'Logout' : 'Login';
+            
+            loginBtn.addEventListener('click', (e) => {
+                if (loginBtn.textContent === 'Logout') {
+                    e.preventDefault();
+                    localStorage.removeItem('isLoggedIn');
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('user');
+                    window.location.href = 'index.html';
+                }
+            });
+        }
+
+        // Load featured upcoming movie
+        async function loadFeaturedMovie() {
+            try {
+                featuredContainer.innerHTML = '<div class="loading"><i class="fas fa-spinner"></i> Loading featured movie...</div>';
+                
+                const response = await fetch('/api/movies/upcoming');
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const movies = await response.json();
+                
+                if (!movies || movies.length === 0) {
+                    featuredContainer.innerHTML = '';
+                    return;
+                }
+                
+                // Find the next featured movie (closest release date)
+                const now = new Date();
+                const upcomingMovies = movies.filter(m => new Date(m.release_date) > now);
+                
+                if (upcomingMovies.length === 0) {
+                    featuredContainer.innerHTML = '';
+                    return;
+                }
+                
+                // Sort by release date and find the first featured movie
+                upcomingMovies.sort((a, b) => new Date(a.release_date) - new Date(b.release_date));
+                const featured = upcomingMovies.find(m => m.is_featured) || upcomingMovies[0];
+                
+                renderFeaturedMovie(featured);
+            } catch (error) {
+                console.error('Error loading featured movie:', error);
+                featuredContainer.innerHTML = `
+                    <div class="error-message">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <p>Couldn't load featured movie</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Render featured movie
+        function renderFeaturedMovie(movie) {
+            const releaseDate = new Date(movie.release_date);
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            const formattedDate = releaseDate.toLocaleDateString('en-US', options);
+            
+            featuredContainer.innerHTML = `
+                <div class="featured-movie">
+                    <img src="${movie.poster_url}" alt="${movie.title}" class="featured-poster"
+                         onerror="this.src='https://via.placeholder.com/600x900?text=No+Poster'">
+                    <div class="featured-content">
+                        <h2 class="featured-title">${movie.title}</h2>
+                        <div class="featured-meta">
+                            <span><i class="fas fa-calendar-alt"></i> ${formattedDate}</span>
+                            <span><i class="fas fa-clock"></i> ${movie.duration || 'TBA'}</span>
+                            <span><i class="fas fa-star"></i> ${movie.rating || 'Coming soon'}</span>
+                        </div>
+                        <p class="featured-description">${movie.description || 'Synopsis coming soon'}</p>
+                        <div class="featured-actions">
+                            <button class="btn btn-primary" data-movie-id="${movie.id}" id="featured-remind-btn">
+                                <i class="fas fa-bell"></i> Remind Me
+                            </button>
+                            <button class="btn btn-outline" onclick="showTrailer('${movie.trailer_url}')">
+                                <i class="fas fa-play"></i> Watch Trailer
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            // Add event listener for remind button
+            document.getElementById('featured-remind-btn').addEventListener('click', function() {
+                setReminder(movie.id, movie.title, this);
+            });
+        }
+
+async function loadMovies() {
+    const loader = `<div class="loader"><i class="fas fa-spinner fa-spin"></i> Loading...</div>`;
+    document.getElementById('movies-container').innerHTML = loader;
+
+    try {
+        const response = await fetch('/api/movies/upcoming');
+        const result = await response.json();
+
+        // Debug logging
+        console.log("API Response:", result);
+
+        if (!result.data || result.data.length === 0) {
+            showMessage("No upcoming movies found. Check back later!");
+            return;
+        }
+
+        renderMovies(result.data);
+    } catch (error) {
+        console.error("Load error:", error);
+        showMessage(`Failed to load movies. Error: ${error.message}`);
+    }
+}
+
+function renderMovies(movies) {
+    const html = movies.map(movie => `
+        <div class="movie-card">
+            <img src="${movie.poster_url}" 
+                 alt="${movie.title}"
+                 onerror="this.src='/default-poster.jpg'">
+            <div class="movie-info">
+                <h3>${movie.title}</h3>
+                <p>${movie.description}</p>
+                <div class="meta">
+                    <span>${new Date(movie.release_date).toLocaleDateString()}</span>
+                </div>
+            </div>
+        </div>
+    `).join('');
+
+    document.getElementById('movies-container').innerHTML = html;
+
+
+    container.innerHTML = movies.map(movie => `
+        <div class="movie-card">
+            <img src="${movie.poster_url}" 
+                 alt="${movie.title}"
+                 onerror="this.src='https://via.placeholder.com/300x450?text=Poster+Not+Available'">
+            <div class="movie-info">
+                <h3>${movie.title}</h3>
+                <p>${movie.description}</p>
+                <div class="meta">
+                    <span>Release: ${new Date(movie.release_date).toLocaleDateString()}</span>
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
+
+function showError(message) {
+    const container = document.getElementById('movies-container');
+    container.innerHTML = `
+        <div class="error-message">
+            <i class="fas fa-exclamation-triangle"></i>
+            <h3>Error Loading Movies</h3>
+            <p>${message}</p>
+            <button onclick="window.location.reload()">Retry</button>
+        </div>
+    `;
+}
+
+// Initialize
+document.addEventListener('DOMContentLoaded', loadUpcomingMovies);
+
+
+
+
+function showNoMoviesMessage() {
+    moviesContainer.innerHTML = `
+        <div class="no-movies">
+            <i class="fas fa-calendar-alt"></i>
+            <h3>Coming Soon</h3>
+            <p>We're preparing some exciting new releases!</p>
+            <p>Check back later for updates.</p>
+        </div>
+    `;
+}
+
+function showErrorMessage(error) {
+    moviesContainer.innerHTML = `
+        <div class="error-message">
+            <i class="fas fa-exclamation-triangle"></i>
+            <h3>Loading Error</h3>
+            <p>${error.message}</p>
+            <div class="debug-info">
+                <p><small>URL: ${apiUrl}</small></p>
+                <p><small>Time: ${new Date().toLocaleString()}</small></p>
+            </div>
+            <button onclick="loadUpcomingMovies()" class="btn btn-primary">
+                <i class="fas fa-sync-alt"></i> Try Again
+            </button>
+        </div>
+    `;
+}
+// Add this debug function
+function debugUpcoming() {
+    const debugInfo = `
+        Current Date: ${new Date()}
+        LocalStorage: ${JSON.stringify(localStorage, null, 2)}
+        API Status: ${fetch('/api/movies/upcoming').then(r => r.status).catch(e => e.message)}
+    `;
+    alert(debugInfo);
+}
+        // Render movies in grid layout
+        function renderMovies(movies) {
+            const now = new Date();
+            
+            moviesContainer.innerHTML = `
+                <div class="movies-grid">
+                    ${movies.map(movie => {
+                        const releaseDate = new Date(movie.release_date);
+                        const daysUntil = Math.floor((releaseDate - now) / (1000 * 60 * 60 * 24));
+                        
+                        // Determine if this is a "new" release (within next 7 days)
+                        const isNewRelease = daysUntil <= 7 && daysUntil >= 0;
+                        
+                        return `
+                            <div class="movie-card ${isNewRelease ? 'new-release' : ''}" 
+                                 data-genres="${movie.genres ? movie.genres.map(g => g.toLowerCase()).join(' ') : ''}">
+                                ${daysUntil <= 7 && daysUntil >= 0 ? 
+                                    `<span class="movie-badge">Coming in ${daysUntil} day${daysUntil !== 1 ? 's' : ''}</span>` : ''}
+                                <img src="${movie.poster_url}" alt="${movie.title}" class="movie-poster"
+                                     onerror="this.src='https://via.placeholder.com/280x400?text=No+Poster'">
+                                <div class="movie-content">
+                                    <h3 class="movie-title">${movie.title}</h3>
+                                    <div class="movie-meta">
+                                        <span>${releaseDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
+                                        <span class="movie-rating">
+                                            <i class="fas fa-star"></i> ${movie.rating || '--'}
+                                        </span>
+                                    </div>
+                                    <p class="movie-description">${movie.description || 'Synopsis coming soon'}</p>
+                                    <div class="movie-actions">
+                                        <button class="btn btn-outline btn-sm" data-movie-id="${movie.id}">
+                                            <i class="fas fa-info-circle"></i> Details
+                                        </button>
+                                        <button class="btn btn-primary btn-sm" data-movie-id="${movie.id}">
+                                            <i class="fas fa-bell"></i> Remind
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    }).join('')}
+                </div>
+            `;
+            
+            // Add event listeners for action buttons
+            document.querySelectorAll('.movie-actions .btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const movieId = this.dataset.movieId;
+                    const movieCard = this.closest('.movie-card');
+                    const movieTitle = movieCard.querySelector('.movie-title').textContent;
+                    
+                    if (this.textContent.includes('Remind')) {
+                        setReminder(movieId, movieTitle, this);
+                    } else {
+                        // Show details - you can implement this as needed
+                        alert(`Details for ${movieTitle} would be shown here`);
+                    }
+                });
+            });
+        }
+
+        // Update countdown to next release
+        function updateCountdown() {
+            const now = new Date();
+            
+            // In a real app, we would get this from the API
+            // For demo purposes, we'll use a hardcoded next release date
+            const nextRelease = new Date(now);
+            nextRelease.setDate(now.getDate() + 15); // 15 days from now
+            
+            const diff = nextRelease - now;
+            
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+            
+            countdownDays.textContent = days.toString().padStart(2, '0');
+            countdownHours.textContent = hours.toString().padStart(2, '0');
+            countdownMinutes.textContent = minutes.toString().padStart(2, '0');
+            countdownSeconds.textContent = seconds.toString().padStart(2, '0');
+        }
+
+        // Show trailer in modal
+        function showTrailer(trailerUrl) {
+            if (!trailerUrl) {
+                alert('Trailer not available');
+                return;
+            }
+            
+            // Extract YouTube video ID
+            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+            const match = trailerUrl.match(regExp);
+            
+            if (match && match[2].length === 11) {
+                const videoId = match[2];
+                const embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+                
+                // Create modal
+                const modal = document.createElement('div');
+                modal.style.position = 'fixed';
+                modal.style.top = '0';
+                modal.style.left = '0';
+                modal.style.width = '100%';
+                modal.style.height = '100%';
+                modal.style.backgroundColor = 'rgba(0,0,0,0.9)';
+                modal.style.zIndex = '1000';
+                modal.style.display = 'flex';
+                modal.style.justifyContent = 'center';
+                modal.style.alignItems = 'center';
+                
+                // Create iframe
+                const iframe = document.createElement('iframe');
+                iframe.width = '80%';
+                iframe.height = '80%';
+                iframe.src = embedUrl;
+                iframe.frameBorder = '0';
+                iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+                iframe.allowFullscreen = true;
+                
+                // Close button
+                const closeBtn = document.createElement('button');
+                closeBtn.innerHTML = '<i class="fas fa-times"></i>';
+                closeBtn.style.position = 'absolute';
+                closeBtn.style.top = '20px';
+                closeBtn.style.right = '20px';
+                closeBtn.style.background = 'transparent';
+                closeBtn.style.border = 'none';
+                closeBtn.style.color = 'white';
+                closeBtn.style.fontSize = '2rem';
+                closeBtn.style.cursor = 'pointer';
+                
+                closeBtn.addEventListener('click', () => {
+                    document.body.removeChild(modal);
+                });
+                
+                modal.appendChild(iframe);
+                modal.appendChild(closeBtn);
+                document.body.appendChild(modal);
+                
+                // Close modal when clicking outside
+                modal.addEventListener('click', (e) => {
+                    if (e.target === modal) {
+                        document.body.removeChild(modal);
+                    }
+                });
+            } else {
+                // Fallback - open in new tab
+                window.open(trailerUrl, '_blank');
+            }
+        }
+
+        // Handle reminder setting
+        async function setReminder(movieId, movieTitle, button) {
+            try {
+                // Check if user is logged in
+                if (!localStorage.getItem('isLoggedIn')) {
+                    alert('Please login to set reminders');
+                    window.location.href = 'index.html';
+                    return;
+                }
+
+                const token = localStorage.getItem('token');
+                const user = JSON.parse(localStorage.getItem('user'));
+                
+                // Show loading state
+                const originalHTML = button.innerHTML;
+                button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Setting...';
+                button.disabled = true;
+                
+                // Send reminder request to backend
+                const response = await fetch('/api/reminders', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        user_id: user.id,
+                        movie_id: movieId,
+                        remind_date: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) // Remind in 7 days
+                    })
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Failed to set reminder');
+                }
+                
+                // Success feedback
+                button.innerHTML = '<i class="fas fa-check"></i> Reminder Set';
+                button.style.background = 'var(--success)';
+                
+                setTimeout(() => {
+                    button.innerHTML = originalHTML;
+                    button.style.background = '';
+                    button.disabled = false;
+                }, 2000);
+                
+                alert(`We'll remind you when "${movieTitle}" tickets go on sale!`);
+                
+            } catch (error) {
+                console.error('Reminder error:', error);
+                alert('Failed to set reminder. Please try again.');
+                button.innerHTML = originalHTML;
+                button.style.background = '';
+                button.disabled = false;
+            }
+        }
+        // Add this to your upcoming.html script
+async function checkApiEndpoint() {
+    try {
+        const response = await fetch('http://localhost:3000/api/movies/upcoming');
+        const data = await response.json();
+        
+        console.log('API Response:', data);
+        
+        if (!Array.isArray(data)) {
+            throw new Error('Invalid data format received from API');
+        }
+        
+        alert(`API Test Successful! Found ${data.length} movies`);
+        return data;
+    } catch (error) {
+        console.error('API Test Failed:', error);
+        alert(`API Test Failed: ${error.message}`);
+        return [];
+    }
+}   
+document.addEventListener('DOMContentLoaded', async () => {
+    console.log('Page loaded, initializing...');
+    const movies = await checkApiEndpoint();
+    console.log('Initial movies data:', movies);
+    loadUpcomingMovies();
+});
+    </script>
+</body>
+</html>

@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Confirmation | VOX Cinemas</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #00c2ff;
+            --dark: #0f0f1a;
+            --light: #f8f9fa;
+            --accent: #ff4d8d;
+            --success: #28a745;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--dark);
+            color: var(--light);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            background-image: linear-gradient(rgba(15, 15, 26, 0.9), rgba(15, 15, 26, 0.9)), 
+                            url('https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');
+            background-size: cover;
+            background-attachment: fixed;
+        }
+
+        header {
+            background: linear-gradient(135deg, #000000 0%, #1a1a2e 100%);
+            padding: 1rem 2rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(to right, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        nav a {
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        nav a:hover, .active {
+            color: var(--primary);
+        }
+
+        main {
+            max-width: 800px;
+            margin: 3rem auto;
+            padding: 2rem;
+            background: rgba(15, 15, 26, 0.8);
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        h2 {
+            color: var(--primary);
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 2rem;
+        }
+
+        .summary {
+            background: rgba(0, 194, 255, 0.1);
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            border-left: 4px solid var(--primary);
+        }
+
+        .summary p {
+            font-size: 1.1rem;
+            margin: 0.5rem 0;
+        }
+
+        .summary span {
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .payment-options {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        h3 {
+            color: var(--light);
+            margin-bottom: 1.5rem;
+            font-size: 1.3rem;
+        }
+
+        button {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            color: white;
+            border: none;
+            padding: 0.8rem 2rem;
+            margin: 0 1rem;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 4px 15px rgba(0, 194, 255, 0.3);
+        }
+
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 194, 255, 0.4);
+        }
+
+        #cash-message, #visa-success {
+            text-align: center;
+            padding: 1rem;
+            background: rgba(255, 77, 141, 0.1);
+            border-radius: 8px;
+            border-left: 4px solid var(--accent);
+            margin-top: 1rem;
+            animation: fadeIn 0.5s ease-out;
+            display: none;
+        }
+
+        #visa-success {
+            background: rgba(40, 167, 69, 0.1);
+            border-left: 4px solid var(--success);
+        }
+
+        .qr-container {
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .qr-code img {
+            width: 150px;
+            height: 150px;
+            background: white;
+            padding: 10px;
+            border-radius: 8px;
+        }
+
+        .book-button {
+            display: inline-block;
+            margin-top: 1rem;
+            padding: 0.6rem 1.5rem;
+            background: var(--primary);
+            color: white;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .hamburger {
+    display: none;
+    cursor: pointer;
+    padding: 10px;
+}
+
+.hamburger .line {
+    width: 25px;
+    height: 3px;
+    background-color: white;
+    margin: 5px;
+    transition: all 0.3s ease;
+}
+
+.dropdown {
+    position: relative;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: var(--dark);
+    min-width: 200px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+    z-index: 1;
+}
+
+.dropdown:hover .dropdown-menu {
+    display: block;
+}
+
+.dropdown-menu li {
+    padding: 0;
+}
+
+.dropdown-menu a {
+    padding: 12px 16px;
+    display: block;
+}
+
+@media (max-width: 768px) {
+    .hamburger {
+        display: block;
+    }
+    
+    .nav-links {
+        display: none;
+        position: absolute;
+        top: 70px;
+        left: 0;
+        right: 0;
+        background: var(--dark);
+        flex-direction: column;
+        align-items: center;
+        padding: 20px 0;
+    }
+    
+    .nav-links.active {
+        display: flex;
+    }
+    
+    .dropdown-menu {
+        position: static;
+        box-shadow: none;
+    }
+}
+
+        @media (max-width: 768px) {
+            nav {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            nav ul {
+                gap: 1rem;
+            }
+
+            main {
+                margin: 1rem;
+                padding: 1rem;
+            }
+
+            button {
+                width: 100%;
+                margin: 0.5rem 0;
+            }
+        }
+        .payment-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            transition: all 0.3s;
+        }
+
+        .payment-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 194, 255, 0.2);
+        }
+
+        .payment-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: var(--primary);
+            animation: spin 1s ease-in-out infinite;
+            margin-left: 10px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .ticket-preview {
+            background: white;
+            color: var(--dark);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 1rem;
+            text-align: left;
+        }
+
+        @media (max-width: 768px) {
+            .payment-options {
+                flex-direction: column;
+            }
+            
+            .payment-card {
+                width: 100%;
+                margin: 0.5rem 0;
+            }
+        }
+      
+        .form-group {
+    margin-bottom: 1rem;
+}
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+}
+.form-group input {
+    width: 100%;
+    padding: 0.5rem;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">VOX</div>
+            <ul>
+                <li><a href="main.html">Home</a></li>
+                <li><a href="index.html" id="loginLink">Login</a></li>
+                <li id="myTicketsNav" style="display: none;"><a href="mytickets.html">My Tickets</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <h2>Booking Confirmation</h2>
+        <div class="summary">
+            <p>Movie: <span id="movie-title-summary">Interstellar</span></p>
+            <p>Date: <span id="booking-date">Today</span></p>
+            <p>Showtime: <span id="showtime-summary">7:30 PM</span></p>
+            <p>Auditorium: <span id="auditorium-summary">IMAX</span></p>
+            <p>Seats: <span id="selected-seats-summary">A3, A4, B5</span></p>
+            <p>Total: $<span id="total-price-summary">45.00</span></p>
+        </div>
+
+        <div class="payment-options">
+            <h3>Choose Payment Method</h3>
+            
+            <div class="payment-grid">
+                <div class="payment-card" id="visa-card">
+                    <div class="payment-icon"><i class="fab fa-cc-visa"></i></div>
+                    <h4>Credit/Debit Card</h4>
+                    <button id="visa-button">Pay Securely</button>
+                </div>
+                
+                <div class="payment-card" id="cash-card">
+                    <div class="payment-icon"><i class="fas fa-money-bill-wave"></i></div>
+                    <h4>Pay at Cinema</h4>
+                    <button id="cash-button">Reserve Seats</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="payment-processing" style="display: none;">
+            <div class="loading-spinner"></div>
+            <p>Processing your payment...</p>
+        </div>
+
+        <div id="cash-message" style="display: none;">
+            <div class="ticket-preview">
+                <h4>Your Reservation</h4>
+                <p><strong>Movie:</strong> <span id="cash-movie-title"></span></p>
+                <p><strong>Showtime:</strong> <span id="cash-showtime"></span></p>
+                <p><strong>Seats:</strong> <span id="cash-seats"></span></p>
+                <div class="qr-code" id="qr-code"></div>
+                <p class="small">Scan this code at the cinema to complete your payment</p>
+            </div>
+            <a href="mytickets.html" class="book-button">View My Tickets</a>
+        </div>
+
+        <div id="visa-success" style="display: none;">
+            <div class="ticket-preview">
+                <h4>Your Tickets</h4>
+                <p><strong>Movie:</strong> <span id="visa-movie-title"></span></p>
+                <p><strong>Showtime:</strong> <span id="visa-showtime"></span></p>
+                <p><strong>Seats:</strong> <span id="visa-seats"></span></p>
+                <div class="qr-code" id="visa-qr-code"></div>
+                <p class="small">Scan this code at the cinema entrance</p>
+            </div>
+            <a href="mytickets.html" class="book-button">View My Tickets</a>
+            <a href="main.html" class="book-button secondary">Book More Movies</a>
+            <li><a href="food.html">Food & Drinks</a></li>
+        </div>
+       <!-- Add this payment form section -->
+<div id="payment-form" style="display:none; margin-top:20px; background:rgba(0,0,0,0.2); padding:20px; border-radius:8px;">
+    <h4 style="margin-top:0; color:var(--primary);">Payment Details</h4>
+    
+    <div style="margin-bottom:15px;">
+        <label style="display:block; margin-bottom:5px;">Card Number</label>
+        <input type="text" id="card-number" placeholder="1234 5678 9012 3456" 
+               style="width:100%; padding:10px; border-radius:4px; border:1px solid #ccc;">
+    </div>
+    
+    <div style="display:flex; gap:15px; margin-bottom:15px;">
+        <div style="flex:1;">
+            <label style="display:block; margin-bottom:5px;">Expiry Date (MM/YY)</label>
+            <input type="text" id="expiry-date" placeholder="MM/YY" 
+                   style="width:100%; padding:10px; border-radius:4px; border:1px solid #ccc;">
+        </div>
+        <div style="flex:1;">
+            <label style="display:block; margin-bottom:5px;">CVV</label>
+            <input type="text" id="cvv" placeholder="123" 
+                   style="width:100%; padding:10px; border-radius:4px; border:1px solid #ccc;">
+        </div>
+    </div>
+    
+    <div style="margin-bottom:15px;">
+        <label style="display:block; margin-bottom:5px;">Name on Card</label>
+        <input type="text" id="card-name" placeholder="John Doe" 
+               style="width:100%; padding:10px; border-radius:4px; border:1px solid #ccc;">
+    </div>
+    
+    <button id="submit-payment" style="background:var(--primary); color:white; border:none; padding:12px; border-radius:4px; width:100%; cursor:pointer;">
+        Confirm Payment
+    </button>
+</div>
+    </main>
+
+    <script src="confirmation.js"></script>
+</body>
+</html>
