@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Manage Admins</title>
+    <link rel="stylesheet" href="/css/main.css">
+
+</head>
+<body>
+    <h1>Manage Admins</h1>
+    <a href="/admin/dashboard"><button type="button">Back to Dashboard</button></a>
+    <form method="POST" action="/admin/manage-admins">
+        <input type="text" name="name" placeholder="Name" required>
+        <input type="email" name="email" placeholder="Email" required>
+        <input type="password" name="password" placeholder="Password" required>
+        <button type="submit">Add Admin</button>
+    </form>
+    <h2>All Admins</h2>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% if (admins && admins.length > 0) { %>
+                <% admins.forEach(function(admin) { %>
+                    <tr>
+                        <td><%= admin.name %></td>
+                        <td><%= admin.email %></td>
+                        <td>
+                            <form method="POST" action="/admin/manage-admins/delete/<%= admin._id %>" style="display:inline;">
+                                <button type="submit" onclick="return confirm('Delete this admin?')">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                <% }) %>
+            <% } else { %>
+                <tr>
+                    <td colspan="3">No admins found.</td>
+                </tr>
+            <% } %>
+        </tbody>
+    </table>
+</body>
+</html> 

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Tickets</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <h1>Cinema CAIRO</h1>
+            <ul>
+                <li><a href="main.html">Home</a></li>
+                <li><a href="#">Movies</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <h2>Book Your Tickets</h2>
+        <div class="movie-details">
+            <img id="movie-poster" src="" alt="Movie Poster">
+            <div class="details">
+                <h3 id="movie-title"></h3>
+                <p id="movie-description"></p>
+            </div>
+        </div>
+        <form class="ticket-form">
+            <div class="form-group">
+                <label for="showtime">Select Showtime:</label>
+                <select id="showtime">
+                    <option value="1">10:00 AM</option>
+                    <option value="2">1:00 PM</option>
+                    <option value="3">4:00 PM</option>
+                    <option value="4">7:00 PM</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="tickets">Number of Tickets:</label>
+                <input type="number" id="tickets" min="1" max="10" value="1">
+            </div>
+            <a href="seating.html" class="proceed-button" id="proceed-button">Proceed to Seat Selection</a>
+        </form>
+    </main>
+    
+    <script>
+        function getQueryParams() {
+            const params = new URLSearchParams(window.location.search);
+            return {
+                title: params.get('title'),
+                poster: params.get('poster'),
+                description: params.get('description')
+            };
+        }
+    
+        const movieDetails = getQueryParams();
+        if (movieDetails.title) {
+            document.getElementById('movie-title').textContent = movieDetails.title;
+        }
+        if (movieDetails.poster) {
+            document.getElementById('movie-poster').src = movieDetails.poster;
+        }
+        if (movieDetails.description) {
+            document.getElementById('movie-description').textContent = movieDetails.description;
+        }
+    </script>
+    
+    <script src="tickets.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

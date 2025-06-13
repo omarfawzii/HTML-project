@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cinema Snacks & Drinks | VOX Cinemas</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/food.css">
+</head>
+<body>
+    <%- include('partials/header') %>
+
+    <main>
+        <section class="hero">
+            <h1>Cinema Snacks & Drinks</h1>
+            <p>Pre-order your favorite treats to enjoy during the movie. Our menu features delicious options for every taste!</p>
+        </section>
+
+        <div class="food-container">
+            <h2 class="section-title">Our Menu</h2>
+            
+            <div class="category-nav" id="categoryNav">
+                <button class="category-btn active" data-category="all">All Items</button>
+                <% if (categories && categories.length > 0) { %>
+                    <% categories.forEach(category => { %>
+                        <button class="category-btn" data-category="<%= category._id %>"><%= category.name %></button>
+                    <% }) %>
+                <% } %>
+            </div>
+            
+            <div class="success-message" id="successMessage"></div>
+            
+            <div class="menu-grid" id="menuGrid">
+                <% if (foodItems && foodItems.length > 0) { %>
+                    <% foodItems.forEach(item => { %>
+                        <div class="menu-item" data-category="<%= item.category_id %>">
+                            <div class="menu-item-img-container">
+                                <img src="<%= item.image_url || 'https://via.placeholder.com/300x200?text=No+Image' %>" alt="<%= item.name %>">
+                            </div>
+                            <div class="menu-item-info">
+                                <h3><%= item.name %></h3>
+                                <p><%= item.description %></p>
+                                <span class="menu-item-price">$<%= item.price.toFixed(2) %></span>
+                                <button class="add-to-cart" 
+                                        data-id="<%= item._id %>" 
+                                        data-name="<%= item.name %>" 
+                                        data-price="<%= item.price %>"
+                                        data-image="<%= item.image_url %>">
+                                    <i class="fas fa-cart-plus"></i> Add to Order
+                                </button>
+                            </div>
+                        </div>
+                    <% }) %>
+                <% } else { %>
+                    <div class="error-message"><h3>No Food Items Available</h3></div>
+                <% } %>
+            </div>
+        </div>
+
+        <button class="cart-btn" id="viewCartBtn">
+            <i class="fas fa-shopping-cart"></i>
+            <span class="cart-count" id="cartCount">0</span>
+        </button>
+        <div class="checkout-modal" id="checkoutModal">
+            </div>
+    </main>
+
+    <%- include('partials/footer') %>
+    <script src="/js/food.js"></script>
+</body>
+</html>

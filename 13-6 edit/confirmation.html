@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmation</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <h1>Cinema CAIRO</h1>
+            <ul>
+                <li><a href="main.html">Home</a></li>
+                <li><a href="#">Movies</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <h2>Confirmation</h2>
+        <div class="summary">
+            <p>Selected Seats: <span id="selected-seats-summary"></span></p>
+            <p>Total Price: $<span id="total-price-summary"></span></p>
+        </div>
+        <div class="payment-options">
+            <h3>Choose Payment Method:</h3>
+            <button id="visa-button">Visa</button>
+            <button id="cash-button">Cash</button>
+        </div>
+        <div id="cash-message" style="display: none; color: red;">
+            Please arrive 30 minutes before the movie starts to pay, or the reservation will be canceled.
+        </div>
+    </main>
+
+    <script src="confirmation.js"></script>
+</body>
+</html>

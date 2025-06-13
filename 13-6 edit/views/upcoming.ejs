@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coming Soon | VOX Cinemas</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/upcoming.css">
+</head>
+<body>
+    <%- include('partials/header') %>
+
+    <div class="upcoming">
+        <h1 class="page-title">Coming Soon to VOX Cinemas</h1>
+        
+        <div class="filter-controls">
+            <button class="filter-btn active" data-filter="all">All Movies</button>
+            <button class="filter-btn" data-filter="action">Action</button>
+            <button class="filter-btn" data-filter="drama">Drama</button>
+            <button class="filter-btn" data-filter="sci-fi">Sci-Fi</button>
+            <button class="filter-btn" data-filter="horror">Horror</button>
+            <button class="filter-btn" data-filter="comedy">Comedy</button>
+        </div>
+        
+        <% if (featuredMovie) { %>
+            <div id="featured-movie-container">
+                <div class="featured-movie">
+                    <img src="<%= featuredMovie.poster_url %>" alt="<%= featuredMovie.title %>" class="featured-poster"
+                         onerror="this.src='https://via.placeholder.com/600x900?text=No+Poster'">
+                    <div class="featured-content">
+                        <h2 class="featured-title"><%= featuredMovie.title %></h2>
+                        <div class="featured-meta">
+                            <span><i class="fas fa-calendar-alt"></i> <%= new Date(featuredMovie.release_date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) %></span>
+                            <span><i class="fas fa-clock"></i> <%= featuredMovie.duration || 'TBA' %></span>
+                            <span><i class="fas fa-star"></i> <%= featuredMovie.rating || 'Coming soon' %></span>
+                        </div>
+                        <p class="featured-description"><%= featuredMovie.description || 'Synopsis coming soon' %></p>
+                        <div class="featured-actions">
+                            <button class="btn btn-primary" data-movie-id="<%= featuredMovie._id %>">
+                                <i class="fas fa-bell"></i> Remind Me
+                            </button>
+                            <button class="btn btn-outline" data-trailer-url="<%= featuredMovie.trailer_url %>">
+                                <i class="fas fa-play"></i> Watch Trailer
+                            </button>
+                            <button class="btn btn-outline" data-movie-id="<%= featuredMovie._id %>">
+                                <i class="fas fa-info-circle"></i> Details
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <% } else { %>
+            <div class="no-featured" style="text-align: center; padding: 3rem; background: var(--card-bg); border-radius: 10px; margin-bottom: 3rem; opacity: 0.7;">
+                <h3>No Featured Movies At The Moment</h3>
+                <p>Check back soon for exciting new releases!</p>
+            </div>
+        <% } %>
+        <div class="countdown-section">
+            <h3 class="countdown-title">Next Big Release In:</h3>
+            <div class="countdown-container" id="countdown">
+                <div class="countdown-item"><div class="countdown-value" id="days">00</div><div class="countdown-label">Days</div></div>
+                <div class="countdown-item"><div class="countdown-value" id="hours">00</div><div class="countdown-label">Hours</div></div>
+                <div class="countdown-item"><div class="countdown-value" id="minutes">00</div><div class="countdown-label">Minutes</div></div>
+                <div class="countdown-item"><div class="countdown-value" id="seconds">00</div><div class="countdown-label">Seconds</div></div>
+            </div>
+        </div>
+        
+        <div id="movies-container">
+            <div class="movies-grid">
+                <% if (upcomingMovies && upcomingMovies.length > 0) { %>
+                    <% upcomingMovies.forEach(movie => { 
+                        const releaseDate = new Date(movie.release_date);
+                        const now = new Date();
+                        const daysUntil = Math.ceil((releaseDate - now) / (1000 * 60 * 60 * 24));
+                    %>
+                    <div class="movie-card" data-id="<%= movie._id %>" data-genres="<%= movie.genres.join(' ').toLowerCase() %>">
+                        <% if (daysUntil <= 7 && daysUntil >= 0) { %>
+                            <span class="movie-badge">Coming in <%= daysUntil %> day<%= daysUntil !== 1 ? 's' : '' %></span>
+                        <% } %>
+                        <img src="<%= movie.poster_url %>" alt="<%= movie.title %>" class="movie-poster" onerror="this.src='https://via.placeholder.com/280x400?text=No+Poster'">
+                        <div class="movie-content">
+                            <h3 class="movie-title"><%= movie.title %></h3>
+                            <div class="movie-meta">
+                                <span><%= releaseDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) %></span>
+                                <span class="movie-rating"><i class="fas fa-star"></i> <%= movie.rating || '--' %></span>
+                            </div>
+                            <div class="movie-actions">
+                                <button class="btn btn-outline btn-sm" data-movie-id="<%= movie._id %>">Details</button>
+                                <button class="btn btn-primary btn-sm" data-movie-id="<%= movie._id %>">Remind</button>
+                            </div>
+                        </div>
+                    </div>
+                    <% }); %>
+                <% } else { %>
+                    <div class="error-message" style="grid-column: 1 / -1;">No upcoming movies to display.</div>
+                <% } %>
+            </div>
+        </div>
+    </div>
+
+    <%- include('partials/footer') %>
+    <script src="/js/upcoming.js"></script>
+</body>
+</html>

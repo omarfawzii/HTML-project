@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cinema Snacks & Drinks | VOX Cinemas</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <link rel="stylesheet" href="../public/css/food.css">
+
+   
+</head>
+<body>
+    <!-- Modern Header -->
+    <header>
+        <nav>
+            <a href="main.html" class="logo">
+                <i class="fas fa-film logo-icon"></i>
+                <span>VOX</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="main.html">Movies</a></li>
+                <li><a href="food.html" class="active">Snacks & Drinks</a></li>
+                <li><a href="mytickets.html">My Tickets</a></li>
+                <li><a href="index.html" id="loginBtn">Login</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1>Cinema Snacks & Drinks</h1>
+        <p>Pre-order your favorite treats to enjoy during the movie. Our menu features delicious options for every taste!</p>
+    </section>
+
+    <!-- Main Content -->
+    <div class="food-container">
+        <h2 class="section-title">Our Menu</h2>
+        
+        <!-- Category Navigation -->
+        <div class="category-nav" id="categoryNav">
+            <!-- Categories will be loaded dynamically -->
+        </div>
+        
+        <!-- Success Message -->
+        <div class="success-message" id="successMessage">
+            <i class="fas fa-check-circle"></i> <span id="successText"></span>
+        </div>
+        
+        <!-- Menu Grid -->
+        <div class="menu-grid" id="menuGrid">
+            <div class="loading-spinner"></div>
+        </div>
+    </div>
+    
+    <!-- Floating Cart Button -->
+    <button class="cart-btn" id="viewCartBtn">
+        <i class="fas fa-shopping-cart"></i>
+        <span class="cart-count" id="cartCount">0</span>
+    </button>
+    
+    <!-- Checkout Modal -->
+    <div class="checkout-modal" id="checkoutModal">
+        <div class="checkout-content">
+            <span class="close-checkout" id="closeCheckout">&times;</span>
+            <h2 class="checkout-title">Complete Your Order</h2>
+            
+            <div class="order-summary" id="orderSummary">
+                <!-- Order items will be loaded here -->
+            </div>
+            
+            <h3>Payment Method</h3>
+            <div class="payment-options">
+                <div class="payment-option" id="visaOption">
+                    <div class="payment-icon"><i class="fab fa-cc-visa"></i></div>
+                    <h4>Credit/Debit Card</h4>
+                    <p>Secure online payment</p>
+                </div>
+                <div class="payment-option" id="cashOption">
+                    <div class="payment-icon"><i class="fas fa-money-bill-wave"></i></div>
+                    <h4>Pay at Cinema</h4>
+                    <p>Pay when you pick up</p>
+                </div>
+            </div>
+            
+            <!-- Visa Payment Form -->
+            <div class="payment-form" id="visaForm">
+                <div class="form-group">
+                    <label for="cardNumber">Card Number</label>
+                    <input type="text" id="cardNumber" placeholder="1234 5678 9012 3456">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="expiryDate">Expiry Date</label>
+                        <input type="text" id="expiryDate" placeholder="MM/YY">
+                    </div>
+                    <div class="form-group">
+                        <label for="cvv">CVV</label>
+                        <input type="text" id="cvv" placeholder="123">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="cardName">Name on Card</label>
+                    <input type="text" id="cardName" placeholder="Ahmed yasser">
+                </div>
+                <button class="submit-payment" id="submitVisa">Pay Now</button>
+            </div>
+            <div class="payment-form" id="paymentProcessing">
+                <div class="payment-success">
+                    <div class="loading-spinner"></div>
+                    <h3>Processing Payment...</h3>
+                    <p>Please wait while we process your payment</p>
+                </div>
+            </div>
+            
+            <!-- Cash Payment Confirmation -->
+            <div class="payment-form" id="cashForm">
+                <div class="payment-success">
+                    <i class="fas fa-check-circle"></i>
+                    <h3>Order Reserved!</h3>
+                    <p>Your food will be prepared and ready for pickup when you arrive at the cinema.</p>
+                    <p>Please pay at the concession stand.</p>
+                    <button class="submit-payment" id="confirmCash">OK</button>
+                </div>
+            </div>
+            
+            <!-- Visa Payment Success -->
+            <div class="payment-form" id="visaSuccess">
+                <div class="payment-success">
+                    <i class="fas fa-check-circle"></i>
+                    <h3>Payment Approved!</h3>
+                    <p>Your payment was successful and your order is confirmed.</p>
+                    <div class="order-confirmation-details">
+                        <p><strong>Order Reference:</strong> <span id="orderReference">VOX-${Math.floor(Math.random() * 1000000)}</span></p>
+                        <p><strong>Total Paid:</strong> <span id="totalPaid">$${cart.reduce((sum, item) => sum + (item.price * item.quantity), 0).toFixed(2)}</span></p>
+                        <p><strong>Payment Method:</strong> Visa ending in ****${document.getElementById('cardNumber').value.slice(-4)}</p>
+                        <p><strong>Status:</strong> <span class="payment-status-approved">Approved</span></p>
+                    </div>
+                    <button class="submit-payment" id="confirmVisa">Done</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    
+
+</body>
+</html>
+<script src="/public/js/food.js"></script>

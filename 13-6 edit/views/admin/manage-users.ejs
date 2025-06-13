@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Manage Users</title>
+    <link rel="stylesheet" href="/css/admin-dash.css">
+    <link rel="stylesheet" href="/css/your-other-style.css">
+</head>
+<body>
+    <h1>Manage Users</h1>
+    <a href="/admin/dashboard"><button type="button">Back to Dashboard</button></a>
+    <form method="POST" action="/admin/manage-users">
+        <input type="text" name="name" placeholder="Name" required>
+        <input type="email" name="email" placeholder="Email" required>
+        <input type="password" name="password" placeholder="Password" required>
+        <button type="submit">Add User</button>
+    </form>
+    <h2>All Users</h2>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% if (users && users.length > 0) { %>
+                <% users.forEach(function(user) { %>
+                    <tr>
+                        <td><%= user.name %></td>
+                        <td><%= user.email %></td>
+                        <td>
+                            <form method="POST" action="/admin/manage-users/delete/<%= user._id %>" style="display:inline;">
+                                <button type="submit" onclick="return confirm('Delete this user?')">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                <% }) %>
+            <% } else { %>
+                <tr>
+                    <td colspan="3">No users found.</td>
+                </tr>
+            <% } %>
+        </tbody>
+    </table>
+</body>
+</html> 

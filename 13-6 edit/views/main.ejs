@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VOX Cinemas - Now Showing</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/main.css">
+</head>
+<body>
+    <%- include('partials/header') %>
+    <main>
+        <section class="featured-movies">
+            <h2 class="section-title">Now Showing</h2>
+            <div class="filters">
+                <button class="filter-btn active" data-genre="all">All</button>
+                <button class="filter-btn" data-genre="action">Action</button>
+                <button class="filter-btn" data-genre="sci-fi">Sci-Fi</button>
+                <button class="filter-btn" data-genre="drama">Drama</button>
+                <button class="filter-btn" data-genre="comedy">Comedy</button>
+            </div>
+            <div class="movie-list" id="movieList">
+                <% if (nowShowingMovies && nowShowingMovies.length > 0) { %>
+                    <% nowShowingMovies.forEach(function(movie) { %>
+                        <div class="movie" data-genres="<%= movie.genres ? movie.genres.map(g => g.toLowerCase()).join(' ') : '' %>">
+                            <div class="movie-poster-container">
+                                <img src="<%= movie.poster_url || 'https://via.placeholder.com/300x450?text=No+Poster' %>" 
+                                     alt="<%= movie.title %>"
+                                     data-fallback="https://via.placeholder.com/300x450?text=No+Poster">
+                                <% if (movie.is_featured) { %>
+                                    <span class="movie-badge">Featured</span>
+                                <% } %>
+                                <% function getEmbedUrl(url) {
+                                    if (!url) return '';
+                                    // Convert YouTube watch or share links to embed format
+                                    const match = url.match(/(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([\w-]{11})/);
+                                    if (match) return `https://www.youtube.com/embed/${match[1]}`;
+                                    return url;
+                                } %>
+                                <% if (movie.trailer_url) { %>
+                                    <button class="trailer-button" data-trailer="<%= getEmbedUrl(movie.trailer_url) %>">
+                                        <i class="fas fa-play"></i> Watch Trailer
+                                    </button>
+                                <% } %>
+                            </div>
+                            <div class="movie-info">
+                                <h3><%= movie.title %></h3>
+                                <div class="rating">
+                                    <i class="fas fa-star"></i>
+                                    <span><%= movie.rating || 'N/A' %></span>
+                                </div>
+                                <div class="genres">
+                                    <% if (movie.genres) { movie.genres.forEach(function(genre) { %>
+                                        <span class="genre"><%= genre %></span>
+                                    <% }); } %>
+                                </div>
+                                <a href="/seating?movieId=<%= movie._id %>" class="book-button">
+                                    <i class="fas fa-ticket-alt"></i> Book Now
+                                </a>
+                            </div>
+                        </div>
+                    <% }); %>
+                <% } else { %>
+                    <div class="loading">
+                        <i class="fas fa-spinner fa-spin"></i>
+                        <p>No movies found</p>
+                    </div>
+                <% } %>
+            </div>
+        </section>
+        <div id="trailer-modal">
+            <div class="modal-content">
+                <span class="close-modal" id="closeModal">&times;</span>
+                <iframe id="trailer-iframe" width="100%" height="450" frameborder="0" allowfullscreen></iframe>
+            </div>
+        </div>
+        <section class="food-section">
+            <h2 class="section-title">Snacks & Drinks</h2>
+            <p>Pre-order your favorite snacks to enjoy during the movie!</p>
+            <div class="food-highlights" id="foodHighlights">
+                <div class="loading">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    <p>Loading food items...</p>
+                </div>
+            </div>
+        </section>
+    </main>
+    <%- include('partials/footer') %>
+    <script src="/js/main.js"></script>
+    <style>
+    .welcome-card {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(90deg, #00c2ff 0%, #ff4d8d 100%);
+        color: #fff;
+        border-radius: 18px;
+        box-shadow: 0 4px 24px rgba(0,194,255,0.10);
+        padding: 1.2rem 2.5rem;
+        margin: 2rem auto 1.5rem auto;
+        font-size: 1.35rem;
+        font-weight: 600;
+        max-width: 420px;
+        gap: 1rem;
+        animation: fadeInUp 0.7s;
+    }
+    .welcome-icon {
+        font-size: 2.2rem;
+        margin-right: 0.7rem;
+        color: #fff;
+        filter: drop-shadow(0 2px 8px rgba(0,194,255,0.15));
+    }
+    .welcome-text {
+        letter-spacing: 0.5px;
+    }
+    .welcome-name {
+        color: #fff;
+        font-weight: 700;
+        text-shadow: 0 2px 8px rgba(0,194,255,0.08);
+    }
+    </style>
+</body>
+</html>

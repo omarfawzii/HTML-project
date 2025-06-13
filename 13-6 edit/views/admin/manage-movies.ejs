@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Movies</title>
+    <link rel="stylesheet" href="/css/admin-dash.css">
+</head>
+<body>
+    <h1>Manage Movies</h1>
+    <a href="/admin/dashboard">Back to Dashboard</a>
+    <div id="movie-management">
+        <h2><%= (typeof editMovie !== 'undefined' && editMovie) ? 'Edit Movie' : 'Add Movie' %></h2>
+        <form method="POST" action="<%= (typeof editMovie !== 'undefined' && editMovie) ? ('/admin/manage-movies/edit/' + editMovie._id) : '/admin/manage-movies' %>" enctype="multipart/form-data">
+            <input type="text" name="title" placeholder="Title" value="<%= (typeof editMovie !== 'undefined' && editMovie) ? editMovie.title : '' %>" required><br>
+            <input type="text" name="description" placeholder="Description" value="<%= (typeof editMovie !== 'undefined' && editMovie) ? editMovie.description : '' %>" required><br>
+            <input type="file" name="poster_image" accept="image/*" <%= (typeof editMovie === 'undefined' || !editMovie) ? 'required' : '' %>><br>
+            <input type="text" name="trailer_url" placeholder="Trailer URL" value="<%= (typeof editMovie !== 'undefined' && editMovie) ? editMovie.trailer_url : '' %>" required><br>
+            <input type="date" name="release_date" value="<%= (typeof editMovie !== 'undefined' && editMovie && editMovie.release_date ? editMovie.release_date.toISOString().substring(0,10) : '') %>" required><br>
+            <input type="number" name="duration" placeholder="Duration (min)" value="<%= (typeof editMovie !== 'undefined' && editMovie) ? editMovie.duration : '' %>" required><br>
+            <input type="text" name="rating" placeholder="Rating" value="<%= (typeof editMovie !== 'undefined' && editMovie) ? editMovie.rating : '' %>" required><br>
+            <input type="text" name="genre" placeholder="Genre" value="<%= (typeof editMovie !== 'undefined' && editMovie && editMovie.genres && editMovie.genres.length ? editMovie.genres[0] : '') %>" required><br>
+            <label><input type="checkbox" name="is_featured" <%= (typeof editMovie !== 'undefined' && editMovie && editMovie.is_featured) ? 'checked' : '' %>> Featured</label><br>
+            <select name="category" required>
+                <option value="now_showing" <%= (typeof editMovie !== 'undefined' && editMovie && editMovie.category === 'now_showing') ? 'selected' : '' %>>Now Showing</option>
+                <option value="coming_soon" <%= (typeof editMovie !== 'undefined' && editMovie && editMovie.category === 'coming_soon') ? 'selected' : '' %>>Coming Soon</option>
+            </select><br>
+            <button type="submit"><%= (typeof editMovie !== 'undefined' && editMovie) ? 'Update Movie' : 'Add Movie' %></button>
+            <% if (typeof editMovie !== 'undefined' && editMovie) { %>
+                <a href="/admin/manage-movies">Cancel</a>
+            <% } %>
+        </form>
+        <h2>All Movies</h2>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Genres</th>
+                    <th>Rating</th>
+                    <th>Category</th>
+                    <th>Featured</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% if (movies && movies.length > 0) { %>
+                    <% movies.forEach(function(movie) { %>
+                        <tr>
+                            <td><%= movie.title %></td>
+                            <td><%= movie.genres.join(', ') %></td>
+                            <td><%= movie.rating %></td>
+                            <td><%= movie.category %></td>
+                            <td><%= movie.is_featured ? 'Yes' : 'No' %></td>
+                            <td>
+                                <a href="/admin/manage-movies/edit/<%= movie._id %>">Edit</a>
+                                <form method="POST" action="/admin/manage-movies/delete/<%= movie._id %>" style="display:inline;">
+                                    <button type="submit" onclick="return confirm('Delete this movie?')">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    <% }) %>
+                <% } else { %>
+                    <tr>
+                        <td colspan="6">No movies found.</td>
+                    </tr>
+                <% } %>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

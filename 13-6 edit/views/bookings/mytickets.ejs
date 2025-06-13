@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Tickets</title>
+    <link rel="stylesheet" href="/css/main.css">
+    <style>
+        .ticket-list { max-width: 800px; margin: 2rem auto; }
+        .ticket-card { background: #222; color: #fff; border-radius: 10px; margin-bottom: 1.5rem; padding: 1.5rem; box-shadow: 0 2px 8px #0003; }
+        .ticket-card h3 { margin: 0 0 0.5rem 0; }
+        .ticket-info { margin-bottom: 0.5rem; }
+        .ticket-seats { font-weight: bold; }
+        .tickets-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        .ticket-card {
+            background: linear-gradient(135deg, rgba(0,194,255,0.08) 0%, rgba(255,77,141,0.08) 100%);
+            border-radius: 18px;
+            box-shadow: 0 4px 24px rgba(0,194,255,0.10);
+            padding: 2rem 1.5rem 1.5rem 1.5rem;
+            color: #fff;
+            border: 1.5px solid var(--primary);
+            position: relative;
+            transition: box-shadow 0.3s, transform 0.3s;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        .ticket-card:hover {
+            box-shadow: 0 8px 32px rgba(0,194,255,0.18);
+            transform: translateY(-4px) scale(1.01);
+        }
+        .ticket-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 0.7rem;
+        }
+        .ticket-movie {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        .ticket-status {
+            font-size: 0.95rem;
+            font-weight: 600;
+            padding: 0.3rem 1rem;
+            border-radius: 12px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            color: #fff;
+            box-shadow: 0 2px 8px rgba(0,194,255,0.10);
+        }
+        .ticket-details {
+            font-size: 1rem;
+            color: #e0e0e0;
+            margin-bottom: 0.7rem;
+        }
+        .ticket-details p {
+            margin: 0.2rem 0;
+        }
+        .ticket-seats {
+            font-weight: 600;
+            color: var(--accent);
+        }
+        .ticket-qr {
+            margin-top: 1rem;
+            text-align: center;
+        }
+        .ticket-qr img {
+            width: 120px;
+            height: 120px;
+            background: #fff;
+            border-radius: 10px;
+            padding: 8px;
+            box-shadow: 0 2px 12px rgba(0,194,255,0.10);
+        }
+        .no-tickets {
+            text-align: center;
+            color: var(--primary);
+            margin: 3rem 0;
+        }
+        .book-button {
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            color: #fff;
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 1.5rem;
+            font-size: 1.1rem;
+            transition: background 0.3s, transform 0.2s;
+            box-shadow: 0 2px 12px rgba(0,194,255,0.10);
+        }
+        .book-button:hover {
+            background: linear-gradient(90deg, var(--accent), var(--primary));
+            transform: translateY(-2px) scale(1.03);
+        }
+        @media (max-width: 600px) {
+            .tickets-container {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            .ticket-card {
+                padding: 1.2rem 0.7rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <%- include('../partials/header') %>
+    <div class="ticket-list">
+        <h2>My Tickets</h2>
+        <% if (bookings && bookings.length > 0) { %>
+            <% bookings.forEach(function(booking) { %>
+                <div class="ticket-card">
+                    <h3><%= booking.movie ? booking.movie.title : 'Movie' %></h3>
+                    <div class="ticket-info">
+                        <span><strong>Showtime:</strong> <%= booking.showtime ? new Date(booking.showtime.time).toLocaleString() : '' %></span><br>
+                        <span><strong>Auditorium:</strong> <%= booking.auditorium ? booking.auditorium.name : '' %></span><br>
+                        <span class="ticket-seats"><strong>Seats:</strong> <%= booking.seats.join(', ') %></span><br>
+                        <span><strong>Total:</strong> $<%= booking.total.toFixed(2) %></span>
+                    </div>
+                    <span><strong>Status:</strong> <%= booking.status %></span>
+                </div>
+            <% }) %>
+        <% } else { %>
+            <p>You have no bookings yet.</p>
+        <% } %>
+    </div>
+    <%- include('../partials/footer') %>
+</body>
+</html> 
