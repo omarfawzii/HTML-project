@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Admin - Manage Movies</title>
+    <link rel="stylesheet" href="/css/admin-dash.css"> </head>
+<body>
+    <h1>Manage Movies</h1>
+    <a href="/admin/dashboard">Back to Dashboard</a>
+    
+    <h2>Add New Movie</h2>
+    <form action="/admin/add-movie" method="POST" enctype="multipart/form-data">
+        <input type="text" name="title" placeholder="Title" required>
+        <textarea name="description" placeholder="Description" required></textarea>
+        <input type="text" name="duration" placeholder="e.g., 2h 15m" required>
+        <input type="text" name="rating" placeholder="e.g., 8.5/10" required>
+        <input type="text" name="genres" placeholder="Genres (comma-separated)" required>
+        <input type="text" name="trailer_url" placeholder="YouTube Trailer URL">
+        <input type="date" name="release_date" required>
+        
+        <label for="category">Category:</label>
+        <select name="category" id="category" required>
+            <option value="now_showing">Now Showing</option>
+            <option value="upcoming">Upcoming</option>
+        </select>
+        
+        <label><input type="checkbox" name="is_featured"> Is Featured?</label>
+        <label>Poster Image: <input type="file" name="poster_image" accept="image/*" required></label>
+        
+        <button type="submit">Add Movie</button>
+    </form>
+    
+    <hr>
+    <h2>Existing Movies</h2>
+    <table>
+        <thead>
+            <tr><th>Title</th><th>Category</th><th>Featured</th></tr>
+        </thead>
+        <tbody>
+            <% if (movies && movies.length) { %>
+                <% movies.forEach(movie => { %>
+                    <tr>
+                        <td><%= movie.title %></td>
+                        <td><%= movie.category %></td>
+                        <td><%= movie.is_featured ? 'Yes' : 'No' %></td>
+                    </tr>
+                <% }) %>
+            <% } else { %>
+                <tr><td colspan="3">No movies found.</td></tr>
+            <% } %>
+        </tbody>
+    </table>
+</body>
+</html>

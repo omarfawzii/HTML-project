@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VOX Cinemas - Now Showing</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/main.css">
+</head>
+<body>
+    <%- include('partials/header') %>
+    <main>
+        <section class="featured-movies">
+            <h2 class="section-title">Now Showing</h2>
+            <div class="filters">
+                <button class="filter-btn active" data-genre="all">All</button>
+                <button class="filter-btn" data-genre="action">Action</button>
+                <button class="filter-btn" data-genre="sci-fi">Sci-Fi</button>
+                <button class="filter-btn" data-genre="drama">Drama</button>
+                <button class="filter-btn" data-genre="comedy">Comedy</button>
+            </div>
+            <div class="movie-list" id="movieList">
+                <% if (nowShowingMovies && nowShowingMovies.length > 0) { %>
+                    <% nowShowingMovies.forEach(function(movie) { %>
+                        <div class="movie" data-genres="<%= movie.genres ? movie.genres.map(g => g.toLowerCase()).join(' ') : '' %>">
+                            <div class="movie-poster-container">
+                                <img src="<%= movie.poster_url || 'https://via.placeholder.com/300x450?text=No+Poster' %>" 
+                                     alt="<%= movie.title %>"
+                                     onerror="this.src='https://via.placeholder.com/300x450?text=No+Poster'">
+                                <% if (movie.is_featured) { %>
+                                    <span class="movie-badge">Featured</span>
+                                <% } %>
+                                <% if (movie.trailer_url) { %>
+                                    <button class="trailer-button" data-trailer-url="<%= movie.trailer_url %>">
+                                        <i class="fas fa-play"></i> Watch Trailer
+                                    </button>
+                                <% } %>
+                            </div>
+                            <div class="movie-info">
+                                <h3><%= movie.title %></h3>
+                                <div class="rating">
+                                    <i class="fas fa-star"></i>
+                                    <span><%= movie.rating || 'N/A' %></span>
+                                </div>
+                                <div class="genres">
+                                    <% if (movie.genres) { movie.genres.forEach(function(genre) { %>
+                                        <span class="genre"><%= genre %></span>
+                                    <% }); } %>
+                                </div>
+                                <a href="/seating?movieId=<%= movie._id %>" class="book-button">
+                                    <i class="fas fa-ticket-alt"></i> Book Now
+                                </a>
+                            </div>
+                        </div>
+                    <% }); %>
+                <% } else { %>
+                    <div class="error" style="grid-column: 1 / -1;">
+                        <i class="fas fa-film"></i>
+                        <h3>No movies are currently showing.</h3>
+                        <p>Please check back later!</p>
+                    </div>
+                <% } %>
+            </div>
+        </section>
+
+        <div id="trailer-modal" style="display: none;">
+            <div class="modal-content">
+                <span class="close-modal" id="closeModal">&times;</span>
+                <iframe id="trailer-iframe" width="100%" height="450" src="" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+            </div>
+        </div>
+    </main>
+    <%- include('partials/footer') %>
+    <script src="/js/main.js"></script>
+</body>
+</html>
