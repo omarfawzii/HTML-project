@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="/css/mytickets.css">
+</head>
+<body>
+    <%- include('partials/header') %>
+    <main>
+        <h2>My Tickets</h2>
+        <div id="tickets-container" class="tickets-container">
+            <% if (bookings && bookings.length > 0) { %>
+                <% bookings.forEach(booking => { %>
+                    <div class="ticket-card">
+                        <div class="ticket-header">
+                            <div class="ticket-movie"><%= booking.movie.title %></div>
+                            <div class="ticket-status status-<%= booking.status %>"><%= booking.status %></div>
+                        </div>
+                        <div class="ticket-details">
+                            <p><strong>Date:</strong> <%= new Date(booking.showtime.date).toLocaleDateString() %></p>
+                            <p><strong>Time:</strong> <%= new Date(booking.showtime.time).toLocaleTimeString() %></p>
+                            <p><strong>Seats:</strong> <%= booking.seats.join(', ') %></p>
+                            <p><strong>Total:</strong> $<%= booking.total.toFixed(2) %></p>
+                        </div>
+                        <div class="ticket-qr">
+                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=<%= booking.booking_reference %>" alt="Ticket QR Code">
+                        </div>
+                    </div>
+                <% }) %>
+            <% } else { %>
+                <div id="no-tickets" class="no-tickets">
+                    <h3>You don't have any tickets yet</h3>
+                    <a href="/main" class="book-button">Browse Movies</a>
+                </div>
+            <% } %>
+        </div>
+    </main>
+    <%- include('partials/footer') %>
+</body>
+</html>

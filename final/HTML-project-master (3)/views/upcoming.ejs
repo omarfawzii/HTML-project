@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coming Soon | VOX Cinemas</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/upcoming.css">
+</head>
+<body>
+    <%- include('partials/header') %>
+
+    <div class="upcoming">
+        <h1 class="page-title">Coming Soon to VOX Cinemas</h1>
+        
+        <div class="filter-controls">
+            <button class="filter-btn active" data-filter="all">All Movies</button>
+            <button class="filter-btn" data-filter="action">Action</button>
+            <button class="filter-btn" data-filter="drama">Drama</button>
+            <button class="filter-btn" data-filter="sci-fi">Sci-Fi</button>
+            <button class="filter-btn" data-filter="horror">Horror</button>
+        </div>
+        
+        <% if (featuredMovie) { %>
+            <div class="featured-movie">
+                <img src="<%= featuredMovie.poster_url %>" alt="<%= featuredMovie.title %>" class="featured-poster">
+                <div class="featured-content">
+                    <h2 class="featured-title"><%= featuredMovie.title %></h2>
+                    <div class="featured-meta">
+                        <span><i class="fas fa-calendar-alt"></i> <%= new Date(featuredMovie.release_date).toLocaleDateString('en-US', { month: 'long', day: 'numeric' }) %></span>
+                        <span><i class="fas fa-clock"></i> <%= featuredMovie.duration %></span>
+                    </div>
+                    <p class="featured-description"><%= featuredMovie.description %></p>
+                    <div class="featured-actions">
+                        <button class="btn btn-primary remind-btn" data-movie-id="<%= featuredMovie._id %>"><i class="fas fa-bell"></i> Remind Me</button>
+                        <button class="btn btn-outline trailer-btn" data-trailer-url="<%= featuredMovie.trailer_url %>"><i class="fas fa-play"></i> Watch Trailer</button>
+                        <button class="btn btn-outline details-btn" data-movie-id="<%= featuredMovie._id %>"><i class="fas fa-info-circle"></i> Details</button>
+                    </div>
+                </div>
+            </div>
+        <% } %>
+        
+        <div class="countdown-section">
+            <h3 class="countdown-title">Next Big Release In:</h3>
+            <div class="countdown-container" id="countdown">
+                <div class="countdown-item"><div class="countdown-value" id="days">00</div><div class="countdown-label">Days</div></div>
+                <div class="countdown-item"><div class="countdown-value" id="hours">00</div><div class="countdown-label">Hours</div></div>
+                <div class="countdown-item"><div class="countdown-value" id="minutes">00</div><div class="countdown-label">Minutes</div></div>
+                <div class="countdown-item"><div class="countdown-value" id="seconds">00</div><div class="countdown-label">Seconds</div></div>
+            </div>
+        </div>
+        
+        <div class="movies-grid">
+            <% if (upcomingMovies && upcomingMovies.length > 0) { %>
+                <% upcomingMovies.forEach(movie => { %>
+                <div class="movie-card" data-genres="<%= movie.genres.join(' ').toLowerCase() %>">
+                    <img src="<%= movie.poster_url %>" alt="<%= movie.title %>" class="movie-poster">
+                    <div class="movie-content">
+                        <h3 class="movie-title"><%= movie.title %></h3>
+                        <div class="movie-meta">
+                            <span><%= new Date(movie.release_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) %></span>
+                            <span class="movie-rating"><i class="fas fa-star"></i> <%= movie.rating %></span>
+                        </div>
+                        <div class="movie-actions">
+                            <button class="btn btn-outline btn-sm details-btn" data-movie-id="<%= movie._id %>">Details</button>
+                            <button class="btn btn-primary btn-sm remind-btn" data-movie-id="<%= movie._id %>">Remind</button>
+                        </div>
+                    </div>
+                </div>
+                <% }); %>
+            <% } else { %>
+                <p>No upcoming movies found.</p>
+            <% } %>
+        </div>
+    </div>
+
+    <div class="fab reminder-bell" id="fabRemind" title="Your Reminders">
+        <i class="fas fa-bell"></i>
+        <span class="badge" id="reminderCount">0</span>
+    </div>
+
+    <div class="movie-modal" id="movieModal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <div class="modal-body">
+                <img id="modalPoster" src="" alt="Movie Poster">
+                <div class="movie-info">
+                    <h2 id="modalTitle"></h2>
+                    <div class="meta">
+                        <span><i class="fas fa-calendar-alt"></i> <span id="modalReleaseDate"></span></span>
+                        <span><i class="fas fa-clock"></i> <span id="modalDuration"></span></span>
+                        <span><i class="fas fa-star"></i> <span id="modalRating"></span></span>
+                    </div>
+                    <p class="description" id="modalDescription"></p>
+                    <div class="genres" id="modalGenres"></div>
+                    <div class="featured-actions">
+                         <button class="btn btn-primary" id="modalRemindBtn"><i class="fas fa-bell"></i> Remind Me</button>
+                         <button class="btn btn-outline" id="modalTrailerBtn"><i class="fas fa-play"></i> Watch Trailer</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="notification-center" id="notificationCenter">
+        <div class="notification-header">
+            <h3>Your Reminders</h3>
+            <button class="close-notifications" id="closeNotifications">&times;</button>
+        </div>
+        <div class="notification-list" id="notificationList">
+            </div>
+    </div>
+
+    <%- include('partials/footer') %>
+    <script src="/js/upcoming.js"></script>
+</body>
+</html>
