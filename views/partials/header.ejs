@@ -1,0 +1,51 @@
+<header>
+    <nav>
+        <div class="logo-container">
+            <a href="/main" class="logo">
+                <i class="fas fa-film logo-icon"></i>
+                <span>VOX</span>
+            </a>
+            <div class="hamburger" id="hamburger">
+                <div class="line"></div><div class="line"></div><div class="line"></div>
+            </div>
+        </div>
+        
+        <div class="search-container">
+            <input type="text" class="search-bar" placeholder="Search movies..." id="searchInput">
+            <button class="search-icon" id="searchBtn"><i class="fas fa-search"></i></button>
+            <div class="autocomplete-dropdown" id="autocompleteDropdown"></div>
+        </div>
+        
+        <ul class="nav-links" id="navLinks">
+            <li><a href="/main" class="<%= currentPage === 'main' ? 'active' : '' %>"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="/upcoming" class="<%= currentPage === 'upcoming' ? 'active' : '' %>"><i class="fas fa-calendar-alt"></i> Coming Soon</a></li>
+            <li><a href="/food" class="<%= currentPage === 'food' ? 'active' : '' %>"><i class="fas fa-utensils"></i> Food & Drinks</a></li>
+            
+            <% if (isLoggedIn) { %>
+                <li><a href="/mytickets" class="<%= currentPage === 'mytickets' ? 'active' : '' %>"><i class="fas fa-ticket-alt"></i> My Tickets</a></li>
+                <li class="notification-center">
+                    <div class="notification-bell" id="notificationBell"><i class="fas fa-bell"></i><span class="notification-count" id="notificationCount">0</span></div>
+                    <div class="notification-dropdown" id="notificationDropdown"></div>
+                </li>
+                <li>
+                    <div class="user-avatar" id="userAvatar" title="<%= user.name %>">
+                        <%= user.initials %>
+                    </div>
+                    <div class="user-dropdown">
+                        <div class="user-info">
+                            <div class="avatar-initials"><%= user.initials %></div>
+                            <div>
+                                <div class="user-name"><%= user.name %></div>
+                                <div class="user-email"><%= user.email %></div>
+                            </div>
+                        </div>
+                        <hr>
+                        <a href="/logout" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                    </div>
+                </li>
+            <% } else { %>
+                <li><a href="/" class="login-btn <%= currentPage === 'home' ? 'active' : '' %>">Login</a></li>
+            <% } %>
+        </ul>
+    </nav>
+</header>

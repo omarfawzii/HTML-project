@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Confirmation</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/confirmation.css">
+</head>
+<body>
+    <%- include('partials/header', { currentPage: '', isLoggedIn: typeof user !== 'undefined', user: user || {} }) %>
+    <main>
+        <section class="summary compact-summary">
+            <h2>Booking Confirmation</h2>
+            <p><span>Movie:</span> <%= booking.movie.title %></p>
+            <p><span>Showtime:</span> <%= booking.showtime.time.toLocaleString() %></p>
+            <p><span>Seats:</span> <%= booking.seats.join(', ') %></p>
+            <p><span>Total:</span> $<%= booking.total %></p>
+        </section>
+        <section class="payment-options">
+            <h3>Payment Method</h3>
+            <% if (!booking.payment_method || booking.payment_method === 'none') { %>
+                <button id="payVisa" class="book-button" style="margin-right:1rem;">Pay with Visa</button>
+                <button id="payCash" class="book-button">Pay with Cash</button>
+                <form id="visaForm" class="form-group" style="display:none;max-width:350px;margin:1rem auto;">
+                  <label for="cardNumber">Card Number</label>
+                  <input type="text" id="cardNumber" maxlength="19" placeholder="Enter your Visa card number" required>
+                  <label for="expiry">Expiry (MM/YY)</label>
+                  <input type="text" id="expiry" maxlength="5" placeholder="MM/YY" required>
+                  <label for="cvv">CVV</label>
+                  <input type="text" id="cvv" maxlength="3" placeholder="CVV" required>
+                  <label for="cardName">Name on Card</label>
+                  <input type="text" id="cardName" maxlength="40" placeholder="Name on Card" required>
+                  <button type="submit">Validate & Pay</button>
+                </form>
+                <div id="qrSection" style="display:none;">
+                  <p>Scan this QR code at the cinema to pay and collect your ticket:</p>
+                  <img src="/images/qr-code.png" alt="QR Code for Cash Payment" />
+                </div>
+                <script>
+                  document.getElementById('payVisa').onclick = function() {
+                    document.getElementById('visaForm').style.display = 'block';
+                    document.getElementById('qrSection').style.display = 'none';
+                  };
+                  document.getElementById('payCash').onclick = async function() {
+                    document.getElementById('visaForm').style.display = 'none';
+                    document.getElementById('qrSection').style.display = 'block';
+                    await fetch('/api/bookings/<%= booking._id %>/payment', {
+                      method: 'POST',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify({ payment_method: 'cash' })
+                    });
+                    location.reload();
+                  };
+                  document.getElementById('visaForm').onsubmit = async function(e) {
+                    e.preventDefault();
+                    const cardInput = document.getElementById('cardNumber');
+                    const expiryInput = document.getElementById('expiry');
+                    const cvvInput = document.getElementById('cvv');
+                    const nameInput = document.getElementById('cardName');
+                    const cardNumber = cardInput.value.replace(/\s+/g, '');
+                    const expiry = expiryInput.value.trim();
+                    const cvv = cvvInput.value.trim();
+                    const name = nameInput.value.trim();
+                    // Visa: starts with 4, 13 or 16 digits
+                    const visaRegex = /^4[0-9]{12}(?:[0-9]{3})?$/;
+                    const expiryRegex = /^(0[1-9]|1[0-2])\/(\d{2})$/;
+                    const cvvRegex = /^\d{3}$/;
+                    let errorMsg = document.getElementById('visa-error-msg');
+                    if (!errorMsg) {
+                      errorMsg = document.createElement('div');
+                      errorMsg.id = 'visa-error-msg';
+                      errorMsg.style.color = 'var(--accent)';
+                      errorMsg.style.marginTop = '0.5rem';
+                      cardInput.parentNode.appendChild(errorMsg);
+                    }
+                    if (!visaRegex.test(cardNumber)) {
+                      errorMsg.textContent = 'Please enter a valid Visa card number (13 or 16 digits, starts with 4).';
+                      return;
+                    } else if (!expiryRegex.test(expiry)) {
+                      errorMsg.textContent = 'Please enter a valid expiry date (MM/YY).';
+                      return;
+                    } else if (!cvvRegex.test(cvv)) {
+                      errorMsg.textContent = 'Please enter a valid 3-digit CVV.';
+                      return;
+                    } else if (!name) {
+                      errorMsg.textContent = 'Please enter the name on the card.';
+                      return;
+                    } else {
+                      errorMsg.textContent = '';
+                    }
+                    await fetch('/api/bookings/<%= booking._id %>/payment', {
+                      method: 'POST',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify({ payment_method: 'visa' })
+                    });
+                    location.reload();
+                  };
+                </script>
+            <% } else if (booking.payment_method === 'cash') { %>
+                <p>Method: <span style="color:var(--primary)">Cash</span></p>
+                <div class="qr-container">
+                  <p>Scan this QR code at the cinema to pay and collect your ticket:</p>
+                  <div class="qr-code">
+                    <img src="/images/qr-code.png" alt="QR Code for Cash Payment" />
+                  </div>
+                </div>
+            <% } else if (booking.payment_method === 'visa') { %>
+                <p>Method: <span style="color:var(--primary)">Visa</span></p>
+                <div style="color:var(--success);margin-top:1rem;">Payment successful! Your card is valid.</div>
+                <div class="qr-container">
+                  <p>Show this QR code at the cinema to collect your ticket:</p>
+                  <div class="qr-code">
+                    <img src="/images/qr-code.png" alt="QR Code for Ticket" />
+                  </div>
+                </div>
+            <% } %>
+        </section>
+        <a href="/main" class="book-button">Return to Home</a>
+    </main>
+    <%- include('partials/footer') %>
+</body>
+</html> 

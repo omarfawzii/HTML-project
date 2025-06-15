@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error - Vox Cinema</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="error-container">
+        <h1>Oops!</h1>
+        <p><%= message %></p>
+        <% if (typeof error !== 'undefined' && error && Object.keys(error).length > 0) { %>
+            <div class="error-details">
+                <pre><%= JSON.stringify(error, null, 2) %></pre>
+            </div>
+        <% } %>
+        <a href="/main" class="btn">Return to Home</a>
+    </div>
+</body>
+</html> 

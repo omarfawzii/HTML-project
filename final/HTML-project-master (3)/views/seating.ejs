@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select Seats - <%= movie.title %></title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/seating.css">
+</head>
+<body>
+    <%- include('partials/header') %>
+    <main>
+        <div class="movie-card">
+          <div class="movie-card__poster">
+            <img src="<%= movie.poster_url || '/images/inception.jpeg' %>" alt="<%= movie.title %> Poster">
+          </div>
+          <div class="movie-card__info">
+            <h1 class="movie-card__title"><%= movie.title %></h1>
+            <div class="movie-card__meta">
+              <span>⏱ <%= movie.duration || '2h 32m' %></span>
+              <span>🎬 <%= movie.genre || 'Action, Crime, Drama' %></span>
+              <span>📅 <%= movie.year || '2008' %></span>
+            </div>
+            <div class="movie-card__rating">
+              <span>⭐ <%= movie.rating || '4.8/5' %></span>
+            </div>
+            <p class="movie-card__desc">
+              <%= movie.description || 'When the menace known as the Joker emerges from his mysterious past, he wreaks havoc and chaos on the people of Gotham. The Dark Knight must accept one of the greatest psychological and physical tests of his ability to fight injustice.' %>
+            </p>
+            <div class="movie-card__details">
+              <div><strong>Director:</strong> <%= movie.director || 'Christopher Nolan' %></div>
+              <div><strong>Cast:</strong> <%= movie.cast || 'Christian Bale, Heath Ledger, Aaron Eckhart' %></div>
+              <div><strong>Language:</strong> <%= movie.language || 'English' %></div>
+            </div>
+          </div>
+        </div>
+        <div class="booking-container">
+            <div class="movie-info">
+                <h1><%= movie.title %></h1>
+                <div class="showtime-selector" id="showtimeSelector">
+                    <% showtimes.forEach(st => { %>
+                        <div class="showtime-option <%= String(st._id) === String(currentShowtime._id) ? 'active' : '' %>"
+                             onclick="window.location.href='/seating?movieId=<%= movie._id %>&showtimeId=<%= st._id %>'">
+                            <div class="showtime-time"><%= new Date(st.time).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) %></div>
+                            <div class="showtime-auditorium"><%= st.auditorium.name %></div>
+                        </div>
+                    <% }); %>
+                </div>
+            </div>
+
+            <div class="seating-container">
+                <div class="screen modern-screen">SCREEN</div>
+                <div class="seating-map modern-seating-map" id="seatingMap"></div>
+                <div class="seat-legend modern-seat-legend">
+                    <div class="legend-item">
+                        <div class="seat available"></div>
+                        <span>Available</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="seat selected"></div>
+                        <span>Selected</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="seat occupied"></div>
+                        <span>Occupied</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="display: flex; justify-content: center; width: 100%;">
+          <div class="booking-summary compact-summary">
+            <h2>Booking Summary</h2>
+            <div class="summary-item">
+              <span>Selected Seats:</span>
+              <span id="selected-seats">None</span>
+            </div>
+            <div class="summary-item">
+              <span>Total Price:</span>
+              <span id="total-price">0.00</span>
+            </div>
+            <button id="proceedButton" class="proceed-button" disabled>
+              Secure Checkout
+            </button>
+          </div>
+        </div>
+    </main>
+    <%- include('partials/footer') %>
+
+    <script>
+        const initialState = {
+            movie: <%- JSON.stringify(movie) %>,
+            currentShowtime: <%- JSON.stringify(currentShowtime) %>,
+            seatAvailability: <%- JSON.stringify(seatAvailability) %>,
+            seatPrices: {
+                standard: 50.00,
+                premium: 75.00,
+                vip: 100.00
+            }
+        };
+    </script>
+    <script src="/js/seating.js"></script>
+</body>
+</html>
