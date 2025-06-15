@@ -1,0 +1,28 @@
+ body {
+            background-color: white;
+        }
+        .container {
+            margin-top: 50px;
+        }
+        .back-btn {
+            background-color: #03045E;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .back-btn:hover {
+            background-color: #023e8a;
+        }
+        .btn-primary {
+            background-color: #03045E;
+            border: none;
+        }
+        .btn-danger {
+            background-color: #e63946;
+            border: none;
+        }
+        .btn-warning {
+            background-color: #ffb703;
+            border: none;
+        }

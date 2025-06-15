@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="/css/confirmation.css">
+</head>
+<body>
+    <%- include('partials/header') %>
+    <main>
+        <h2>Booking Confirmation</h2>
+        <div class="summary">
+            <p><strong>Booking Ref:</strong> <%= booking.booking_reference %></p>
+            <p><strong>Movie:</strong> <%= booking.movie.title %></p>
+            <p><strong>Date:</strong> <%= new Date(booking.showtime.date).toLocaleDateString() %></p>
+            <p><strong>Time:</strong> <%= new Date(booking.showtime.time).toLocaleTimeString() %></p>
+            <p><strong>Auditorium:</strong> <%= booking.showtime.auditorium.name %></p>
+            <p><strong>Seats:</strong> <%= booking.seats.join(', ') %></p>
+            <p><strong>Total:</strong> $<%= booking.total.toFixed(2) %></p>
+        </div>
+        <div class="payment-options">
+            <p>Your seats are confirmed! View your ticket below.</p>
+            <a href="/mytickets" class="book-button">View My Tickets</a>
+        </div>
+    </main>
+    <%- include('partials/footer') %>
+</body>
+</html>
