@@ -114,24 +114,43 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => { successMessage.style.display = 'none'; }, 2000);
     }
 
-    // --- MODAL LOGIC (with full interactivity) ---
     function openCheckoutModal() {
-        if (localStorage.getItem('isLoggedIn') !== 'true') {
-            showSuccessMessage('Please log in to place an order.');
-            return;
-        }
-        if (cart.length === 0) {
-            showSuccessMessage('Your cart is empty.');
-            return;
-        }
-        // The modal HTML should be in your food.ejs file. This just displays it.
-        checkoutModal.style.display = 'block';
-        renderOrderSummary();
-
-        // Attach modal-specific listeners only when it's open
-        checkoutModal.querySelector('#closeCheckout').addEventListener('click', closeCheckoutModal);
-        // Payment option listeners, etc.
+    if (localStorage.getItem('isLoggedIn') !== 'true') {
+        showSuccessMessage('Please log in to place an order.');
+        return;
     }
+    if (cart.length === 0) {
+        showSuccessMessage('Your cart is empty.');
+        return;
+    }
+
+    checkoutModal.style.display = 'block';
+    renderOrderSummary();
+
+    // Close modal
+    checkoutModal.querySelector('#closeCheckout').addEventListener('click', closeCheckoutModal);
+
+    // Payment method radio button listeners
+    const paymentRadios = checkoutModal.querySelectorAll('input[name="payment-method"]');
+    const visaForm = checkoutModal.querySelector('#visaPaymentForm');
+    // Show form or not, based on selected payment method
+    function updateVisaVisibility() {
+        const selected = checkoutModal.querySelector('input[name="payment-method"]:checked');
+        visaForm.style.display = (selected && selected.value === 'visa') ? 'block' : 'none';
+    }
+    paymentRadios.forEach(radio => {
+        radio.addEventListener('change', updateVisaVisibility);
+    });
+    updateVisaVisibility();
+
+    // Handle checkout button click
+    const checkoutBtn = checkoutModal.querySelector('#checkoutBtn');
+    if (checkoutBtn) {
+        checkoutBtn.onclick = async function() {
+            await handleCheckout();
+        };
+    }
+}
 
     function closeCheckoutModal() {
         checkoutModal.style.display = 'none';
@@ -157,14 +176,14 @@ document.addEventListener('DOMContentLoaded', () => {
                             <span>${item.quantity}</span>
                             <button class="quantity-btn" data-id="${item.id}" data-action="increase">+</button>
                         </div>
-                        <span>$${(item.price * item.quantity).toFixed(2)}</span>
+                        <span>${(item.price * item.quantity).toFixed(2)} EGP</span>
                         <button class="remove-item" data-id="${item.id}"><i class="fas fa-trash"></i></button>
                     </div>
                 </div>
             `).join('')}
             <div class="order-total">
                 <span>Total:</span>
-                <span>$${total.toFixed(2)}</span>
+                <span>${total.toFixed(2)} EGP</span>
             </div>
         `;
 
@@ -182,8 +201,46 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- PAYMENT SUBMISSION ---
-    // The payment logic remains largely the same, handled within the modal.
-    // Ensure the event listeners for payment are set up within `initCheckoutModal` or `openCheckoutModal`.
+    async function handleCheckout() {
+    const paymentMethod = checkoutModal.querySelector('input[name="payment-method"]:checked').value;
+    let paymentDetails = {};
+    if(paymentMethod === 'visa') {
+        const cardNumber = document.getElementById('cardNumber').value.trim();
+        const cardExpiry = document.getElementById('cardExpiry').value.trim();
+        const cardCVC = document.getElementById('cardCVC').value.trim();
+        if(!cardNumber || !cardExpiry || !cardCVC) {
+            showSuccessMessage('Please complete card details!');
+            return;
+        }
+        paymentDetails = { cardNumber, cardExpiry, cardCVC };
+    }
+    const items = cart.map(item => ({
+        food_item_id: item.id,
+        quantity: item.quantity,
+        price_at_order: item.price
+    }));
+    const total_amount = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    try {
+        const response = await fetch('/api/food/orders', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ items, total_amount, payment_method: paymentMethod, payment_details: paymentDetails })
+        });
+        if (response.ok) {
+            showSuccessMessage('Order placed successfully!');
+            cart = [];
+            updateCart();
+            closeCheckoutModal();
+        } else {
+            const data = await response.json();
+            showSuccessMessage(data.error || 'Order failed.');
+        }
+    } catch (err) {
+        showSuccessMessage('Order failed.');
+    }
+}
     
     // START THE APP
     initialize();

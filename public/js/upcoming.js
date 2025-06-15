@@ -1,4 +1,3 @@
-// public/js/upcoming.js
 document.addEventListener('DOMContentLoaded', () => {
     // This script now only adds interactivity to the server-rendered page.
     attachEventListeners();
@@ -27,6 +26,18 @@ function attachEventListeners() {
         }
     });
 
+    
+
+    // Handle trailer buttons globally
+    document.addEventListener('click', (e) => {
+        const trailerBtn = e.target.closest('.trailer-btn, #modalTrailerBtn');
+        if (trailerBtn) {
+            e.preventDefault();
+            const trailerUrl = trailerBtn.dataset.trailerUrl;
+            showTrailer(trailerUrl);
+        }
+    });
+
     // Filter buttons
     document.querySelectorAll('.filter-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
@@ -41,7 +52,6 @@ function attachEventListeners() {
         });
     });
 
-    // Modal and Notification Center listeners
     document.getElementById('fabRemind')?.addEventListener('click', toggleNotificationCenter);
     document.getElementById('closeNotifications')?.addEventListener('click', toggleNotificationCenter);
     document.querySelector('.movie-modal .close-modal')?.addEventListener('click', closeMovieDetails);
@@ -158,11 +168,119 @@ async function updateCountdown() {
         console.error('Failed to update countdown:', error);
     }
 }
-
 function showTrailer(trailerUrl) {
-    if (!trailerUrl || trailerUrl.includes('null')) {
-        return alert('Trailer not available.');
+  if (!trailerUrl || trailerUrl === 'null' || trailerUrl === 'undefined') {
+    showFloatingNotification('Trailer not available for this movie', 'warning');
+    return;
+  }
+
+  const modal = document.getElementById('trailerModal');
+  const container = document.getElementById('trailerContainer');
+  const placeholder = container.querySelector('.trailer-placeholder');
+  
+  // Show loading state
+  modal.classList.add('active');
+  container.innerHTML = `
+    <div class="trailer-placeholder">
+      <i class="fas fa-spinner fa-spin"></i>
+      <p>Loading trailer...</p>
+    </div>
+  `;
+
+  // Extract video ID based on URL type
+  const videoId = extractVideoId(trailerUrl);
+  
+  if (!videoId) {
+    container.innerHTML = `
+      <div class="trailer-placeholder">
+        <i class="fas fa-exclamation-triangle"></i>
+        <p>Trailer format not supported</p>
+        <p>We only support YouTube trailers at this time</p>
+      </div>
+    `;
+    return;
+  }
+
+  // Create iframe
+  const iframe = document.createElement('iframe');
+  iframe.setAttribute('src', `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1`);
+  iframe.setAttribute('frameborder', '0');
+  iframe.setAttribute('allowfullscreen', '');
+  iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture');
+  
+  container.innerHTML = '';
+  container.appendChild(iframe);
+  
+  setupTrailerControls(iframe);
+}
+
+function extractVideoId(url) {
+  const patterns = [
+    /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/i,
+    /^([^"&?\/\s]{11})$/i
+  ];
+
+  for (const pattern of patterns) {
+    const match = url.match(pattern);
+    if (match && match[1]) {
+      return match[1];
     }
-    alert(`Showing trailer: ${trailerUrl}`);
-    // You can implement a more sophisticated trailer modal here
+  }
+
+  return null;
+}
+
+function setupTrailerControls(iframe) {
+  const muteToggle = document.getElementById('muteToggle');
+  const fullscreenToggle = document.getElementById('fullscreenToggle');
+  const closeBtn = document.querySelector('.close-trailer');
+  const modal = document.getElementById('trailerModal');
+  
+  let isMuted = false;
+  
+  muteToggle.addEventListener('click', () => {
+    isMuted = !isMuted;
+    const icon = muteToggle.querySelector('i');
+    
+    if (isMuted) {
+      icon.classList.replace('fa-volume-up', 'fa-volume-mute');
+      iframe.contentWindow.postMessage('{"event":"command","func":"mute","args":""}', '*');
+    } else {
+      icon.classList.replace('fa-volume-mute', 'fa-volume-up');
+      iframe.contentWindow.postMessage('{"event":"command","func":"unMute","args":""}', '*');
+    }
+  });
+  
+  fullscreenToggle.addEventListener('click', () => {
+    if (iframe.requestFullscreen) {
+      iframe.requestFullscreen();
+    } else if (iframe.webkitRequestFullscreen) {
+      iframe.webkitRequestFullscreen();
+    } else if (iframe.msRequestFullscreen) {
+      iframe.msRequestFullscreen();
+    }
+  });
+  
+  // Close modal
+  closeBtn.addEventListener('click', () => {
+    // Pause video when closing
+    iframe.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
+    modal.classList.remove('active');
+  });
+  
+  // Close when clicking outside
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) {
+      iframe.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
+      modal.classList.remove('active');
+    }
+  });
+  
+  // Close with Escape key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && modal.classList.contains('active')) {
+      iframe.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
+      modal.classList.remove('active');
+    }
+  });
 }

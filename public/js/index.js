@@ -5,11 +5,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const loginForm = document.getElementById('loginForm');
     const signupForm = document.getElementById('signupForm');
 
-    // Form toggle
+   
     signUpButton.addEventListener('click', () => container.classList.add('right-panel-active'));
     signInButton.addEventListener('click', () => container.classList.remove('right-panel-active'));
 
-    // Login handler
+ 
     loginForm.addEventListener('submit', async function(e) {
         e.preventDefault();
         const email = this.querySelector('input[type="email"]').value;
@@ -32,12 +32,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 throw new Error(data.error || 'Login failed');
             }
 
-            // Store auth data
+            
             localStorage.setItem('token', data.token);
             localStorage.setItem('user', JSON.stringify({ name: data.name, userType: data.userType }));
             localStorage.setItem('isLoggedIn', 'true');
             
-            // Redirect based on userType
+            
             if (data.userType === 'admin') {
                 window.location.href = '/admin/dashboard';
             } else {
@@ -52,7 +52,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Signup handler
+    
     signupForm.addEventListener('submit', async function(e) {
         e.preventDefault();
         const name = this.querySelector('input[type="text"]').value;
@@ -76,7 +76,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 throw new Error(data.error || 'Registration failed');
             }
 
-            // Store auth data
+            
             localStorage.setItem('token', data.token);
             localStorage.setItem('user', JSON.stringify(data.user));
             localStorage.setItem('isLoggedIn', 'true');
@@ -92,7 +92,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
-// Update the login function to properly handle tokens
+
 async function loginUser(email, password) {
     try {
         const response = await fetch('http://localhost:3000/api/auth/login', {
@@ -110,12 +110,12 @@ async function loginUser(email, password) {
 
         const data = await response.json();
         
-        // Store token and user data
+       
         localStorage.setItem('token', data.token);
         localStorage.setItem('user', JSON.stringify(data.user));
         localStorage.setItem('isLoggedIn', 'true');
         
-        // Check for pending reminder after login
+        
         const pendingReminder = localStorage.getItem('reminderAfterLogin');
         if (pendingReminder) {
             localStorage.removeItem('reminderAfterLogin');
