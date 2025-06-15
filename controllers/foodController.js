@@ -1,13 +1,22 @@
 const FoodItem = require('../models/FoodItem');
 const FoodOrder = require('../models/FoodOrder');
 const FoodCategory = require('../models/FoodCategory');
+console.log('🍟🍔 THIS IS THE FOOD CONTROLLER IN USE!!');
 
 // --- PAGE RENDERING ---
 // This function renders the main food page for the user to see.
 exports.renderFoodPage = async (req, res, next) => {
     try {
+        // Get available food items
         const foodItems = await FoodItem.find({ is_available: true }).sort('name');
-        res.render('food', { foodItems, currentPage: 'food' });
+
+        // Get active categories (for navigation bar in food.ejs)
+        const categories = await FoodCategory.find({ is_active: true }).sort('display_order');
+
+        // NOW: send both foodItems AND categories to your EJS template.
+        console.log('Categories fetched:', categories);
+        console.log('Food items fetched:', foodItems);
+        res.render('food', { foodItems, categories, currentPage: 'food' });
     } catch (error) {
         next(error);
     }
@@ -80,3 +89,5 @@ exports.createFoodOrder = async (req, res, next) => {
         next(error);
     }
 };
+
+

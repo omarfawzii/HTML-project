@@ -2,47 +2,97 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manage Users</title>
     <link rel="stylesheet" href="/css/admin-dash.css">
-    <link rel="stylesheet" href="/css/your-other-style.css">
+    <link rel="stylesheet" href="/css/manage-users.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"/>
 </head>
 <body>
-    <h1>Manage Users</h1>
-    <a href="/admin/dashboard"><button type="button">Back to Dashboard</button></a>
-    <form method="POST" action="/admin/manage-users">
-        <input type="text" name="name" placeholder="Name" required>
-        <input type="email" name="email" placeholder="Email" required>
-        <input type="password" name="password" placeholder="Password" required>
-        <button type="submit">Add User</button>
-    </form>
-    <h2>All Users</h2>
-    <table border="1">
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <% if (users && users.length > 0) { %>
-                <% users.forEach(function(user) { %>
+    <div id="user-management">
+        <h1><i class="fas fa-users me-2"></i>Manage Users</h1>
+        <a href="/admin/dashboard" class="back-btn">
+            <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+        </a>
+        
+        <h2><i class="fas fa-user-plus me-2"></i>Add New User</h2>
+        <form method="POST" action="/admin/manage-users">
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="name"><i class="fas fa-user me-2"></i>Full Name</label>
+                    <input type="text" id="name" name="name" placeholder="Enter user's full name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email"><i class="fas fa-envelope me-2"></i>Email Address</label>
+                    <input type="email" id="email" name="email" placeholder="Enter user's email address" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password"><i class="fas fa-lock me-2"></i>Password</label>
+                    <input type="password" id="password" name="password" placeholder="Enter secure password" required>
+                </div>
+            </div>
+            
+            <button type="submit">
+                <i class="fas fa-user-plus me-2"></i>Add User
+            </button>
+        </form>
+        
+        <h2><i class="fas fa-list me-2"></i>All Users</h2>
+        <div class="table-responsive">
+            <table>
+                <thead>
                     <tr>
-                        <td><%= user.name %></td>
-                        <td><%= user.email %></td>
-                        <td>
-                            <form method="POST" action="/admin/manage-users/delete/<%= user._id %>" style="display:inline;">
-                                <button type="submit" onclick="return confirm('Delete this user?')">Delete</button>
-                            </form>
-                        </td>
+                        <th><i class="fas fa-user me-2"></i>User</th>
+                        <th><i class="fas fa-envelope me-2"></i>Email</th>
+                        <th><i class="fas fa-cogs me-2"></i>Actions</th>
                     </tr>
-                <% }) %>
-            <% } else { %>
-                <tr>
-                    <td colspan="3">No users found.</td>
-                </tr>
-            <% } %>
-        </tbody>
-    </table>
+                </thead>
+                <tbody>
+                    <% if (users && users.length > 0) { %>
+                        <% users.forEach(function(user) { %>
+                            <tr>
+                                <td>
+                                    <div class="user-row">
+                                        <div class="user-avatar">
+                                            <%= user.name.charAt(0).toUpperCase() %>
+                                        </div>
+                                        <div class="user-info">
+                                            <div class="user-name"><%= user.name %></div>
+                                            <div class="user-email"><%= user.email %></div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="user-email"><%= user.email %></span>
+                                </td>
+                                <td>
+                                    <form method="POST" action="/admin/manage-users/delete/<%= user._id %>" style="display:inline;">
+                                        <button type="submit" class="delete-btn" onclick="return confirm('Are you sure you want to delete this user?')">
+                                            <i class="fas fa-trash me-1"></i>Delete
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        <% }) %>
+                    <% } else { %>
+                        <tr>
+                            <td colspan="3" class="text-center">
+                                <div class="empty-state">
+                                    <i class="fas fa-users"></i>
+                                    <h3>No Users Found</h3>
+                                    <p>Start by adding your first user above.</p>
+                                </div>
+                            </td>
+                        </tr>
+                    <% } %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html> 

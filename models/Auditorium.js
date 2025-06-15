@@ -1,9 +1,9 @@
-// models/Auditorium.js
+
 const mongoose = require('mongoose');
 
 const seatSchema = new mongoose.Schema({
     number: { type: Number, required: true },
-    type: { type: String, default: 'standard' }, // e.g., 'standard', 'vip', 'wheelchair'
+    type: { type: String, default: 'standard' }, 
     show_number: { type: Boolean, default: false }
 }, { _id: false });
 
@@ -21,7 +21,7 @@ const auditoriumSchema = new mongoose.Schema({
     seat_map: {
         rows: [rowSchema]
     },
-    features: { type: mongoose.Schema.Types.Mixed } // For extra JSON data like 'love_seats'
+    features: { type: mongoose.Schema.Types.Mixed } 
 }, { timestamps: true });
 
 module.exports = mongoose.model('Auditorium', auditoriumSchema);

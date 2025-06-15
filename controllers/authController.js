@@ -1,4 +1,4 @@
-// File: controllers/authController.js
+
 
 const User = require('../models/User');
 const Admin = require('../models/Admin');
@@ -6,7 +6,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 exports.renderAuthPage = (req, res) => {
-    // FIX: Add the currentPage variable here
+    
     res.render('index', { currentPage: 'login' });
 };
 
@@ -49,7 +49,7 @@ exports.login = async (req, res) => {
         res.cookie('token', token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
-            maxAge: 3 * 60 * 60 * 1000 // 3 hours
+            maxAge: 3 * 60 * 60 * 1000 
         });
 
         res.status(200).json({ message: 'Login successful', userType, name: user.name });
@@ -62,13 +62,13 @@ exports.login = async (req, res) => {
 
 exports.logout = (req, res) => {
     res.cookie('token', 'loggedout', {
-        expires: new Date(Date.now() + 5 * 1000), // Expire in 5 seconds
+        expires: new Date(Date.now() + 5 * 1000), 
         httpOnly: true
     });
     res.status(200).json({ status: 'success' });
 };
 
-// Register handler (UPDATED to automatically log in and return a token)
+
 exports.register = async (req, res) => {
     const { name, email, password } = req.body;
     if (!name || !email || !password) return res.status(400).json({ error: 'All fields required' });

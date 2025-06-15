@@ -112,7 +112,30 @@
             </div>
     </div>
 
+
+<div class="trailer-modal" id="trailerModal">
+  <div class="trailer-modal-content">
+    <button class="close-trailer">&times;</button>
+    <div class="trailer-container" id="trailerContainer">
+      <div class="trailer-placeholder">
+        <i class="fas fa-film"></i>
+        <p>Loading trailer...</p>
+      </div>
+    </div>
+    <div class="trailer-controls">
+      <button class="btn btn-outline" id="muteToggle">
+        <i class="fas fa-volume-up"></i>
+      </button>
+      <button class="btn btn-outline" id="fullscreenToggle">
+        <i class="fas fa-expand"></i>
+      </button>
+    </div>
+  </div>
+</div>
+
     <%- include('partials/footer') %>
     <script src="/js/upcoming.js"></script>
+
+
 </body>
 </html>

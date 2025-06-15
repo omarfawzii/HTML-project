@@ -6,7 +6,9 @@
                 <span>VOX</span>
             </a>
             <div class="hamburger" id="hamburger">
-                <div class="line"></div><div class="line"></div><div class="line"></div>
+                <div class="line"></div>
+                <div class="line"></div>
+                <div class="line"></div>
             </div>
         </div>
         
@@ -15,9 +17,10 @@
             <button class="search-icon" id="searchBtn"><i class="fas fa-search"></i></button>
             <div class="autocomplete-dropdown" id="autocompleteDropdown"></div>
         </div>
+      
         
         <ul class="nav-links" id="navLinks">
-            <li><a href="/main" class="<%= currentPage === 'main' ? 'active' : '' %>"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="/main" class="<%= currentPage === 'home' ? 'active' : '' %>"><i class="fas fa-home"></i> Home</a></li>
             <li><a href="/upcoming" class="<%= currentPage === 'upcoming' ? 'active' : '' %>"><i class="fas fa-calendar-alt"></i> Coming Soon</a></li>
             <li><a href="/food" class="<%= currentPage === 'food' ? 'active' : '' %>"><i class="fas fa-utensils"></i> Food & Drinks</a></li>
             
@@ -25,12 +28,10 @@
                 <li><a href="/mytickets" class="<%= currentPage === 'mytickets' ? 'active' : '' %>"><i class="fas fa-ticket-alt"></i> My Tickets</a></li>
                 <li class="notification-center">
                     <div class="notification-bell" id="notificationBell"><i class="fas fa-bell"></i><span class="notification-count" id="notificationCount">0</span></div>
-                    <div class="notification-dropdown" id="notificationDropdown"></div>
+                    <div class="notification-dropdown" id="notificationDropdown"> </div>
                 </li>
                 <li>
-                    <div class="user-avatar" id="userAvatar" title="<%= user.name %>">
-                        <%= user.initials %>
-                    </div>
+                    <div class="user-avatar" id="userAvatar"><%= user.initials %></div>
                     <div class="user-dropdown">
                         <div class="user-info">
                             <div class="avatar-initials"><%= user.initials %></div>
@@ -40,12 +41,37 @@
                             </div>
                         </div>
                         <hr>
-                        <a href="/logout" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                        <a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</a>
                     </div>
                 </li>
+                <li>
+                  <% if (isLoggedIn && user && user.name) { %>
+                  <span class="welcome-inline">
+                      <i class="fas fa-user-circle"></i> <span>Welcome, <strong><%= user.name %></strong>!</span>
+                  </span>
+                  <% } %>
+                </li>
             <% } else { %>
-                <li><a href="/" class="login-btn <%= currentPage === 'home' ? 'active' : '' %>">Login</a></li>
+                <li><a href="/" id="loginBtn" class="login-btn">Login</a></li>
             <% } %>
         </ul>
     </nav>
 </header>
+<style>
+.welcome-inline {
+    display: inline-flex;
+    align-items: center;
+    font-size: 1rem;
+    color: var(--primary);
+    background: none;
+    margin-left: 1.5rem;
+    font-weight: 500;
+    gap: 0.4rem;
+    vertical-align: middle;
+}
+.welcome-inline i {
+    font-size: 1.1rem;
+    color: var(--primary);
+    margin-right: 0.2rem;
+}
+</style>

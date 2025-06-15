@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin - Add Food Item</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h2>Add New Food Item</h2>
+        <% if (message) { %>
+            <div class="alert alert-info"><%= message %></div>
+        <% } %>
+        <form action="/admin/food" method="POST">
+            <div class="mb-3">
+                <label for="name" class="form-label">Name</label>
+                <input type="text" class="form-control" id="name" name="name" required>
+            </div>
+            <div class="mb-3">
+                <label for="description" class="form-label">Description</label>
+                <textarea class="form-control" id="description" name="description" required></textarea>
+            </div>
+            <div class="mb-3">
+                <label for="price" class="form-label">Price</label>
+                <input type="number" step="0.01" class="form-control" id="price" name="price" required>
+            </div>
+            <div class="mb-3">
+                <label for="image_url" class="form-label">Image URL</label>
+                <input type="url" class="form-control" id="image_url" name="image_url">
+            </div>
+            <div class="mb-3">
+                <label for="category_id" class="form-label">Category</label>
+                <select class="form-select" id="category_id" name="category_id" required>
+                    <% categories.forEach(function(cat) { %>
+                        <option value="<%= cat._id %>"><%= cat.name %></option>
+                    <% }); %>
+                </select>
+            </div>
+            <div class="mb-3 form-check">
+                <input type="checkbox" class="form-check-input" id="is_available" name="is_available" checked>
+                <label class="form-check-label" for="is_available">Available</label>
+            </div>
+            <div class="mb-3">
+                <label>Dietary Info:</label><br>
+                <input type="checkbox" id="vegetarian" name="dietary_info[vegetarian]"> <label for="vegetarian">Vegetarian</label>
+                <input type="checkbox" id="vegan" name="dietary_info[vegan]"> <label for="vegan">Vegan</label>
+                <input type="checkbox" id="glutenFree" name="dietary_info[glutenFree]"> <label for="glutenFree">Gluten Free</label>
+            </div>
+            <button type="submit" class="btn btn-primary">Add Food Item</button>
+        </form>
+    </div>
+</body>
+</html> 

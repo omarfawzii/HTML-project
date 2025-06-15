@@ -14,6 +14,7 @@ const bookingSchema = new mongoose.Schema({
     payment_method: { type: String, enum: ['visa', 'cash', 'none'], default: 'none' }
 }, { timestamps: true });
 
+// Pre-save hook to generate a unique booking reference
 bookingSchema.pre('validate', function(next) {
     if (this.isNew) {
         const nanoid = customAlphabet('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ', 8);
